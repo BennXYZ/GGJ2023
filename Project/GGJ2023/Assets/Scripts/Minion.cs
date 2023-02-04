@@ -124,10 +124,9 @@ public class Minion : MonoBehaviour
         {
             //TODO: Also Cancel if target is disabled
             if (currentTargetBuilding == null)
-                return currentTargetBuilding.Interact(this);
-            else
                 CancelCurrentBuilding();
-
+            else
+                return currentTargetBuilding.Interact(this);
         }
         return MinionStates.Moving;
     }

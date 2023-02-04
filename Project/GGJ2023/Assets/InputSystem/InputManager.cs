@@ -6,22 +6,88 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using System.Linq;
+using UnityEngine.InputSystem.Controls;
 
-[CreateAssetMenu(fileName = "InputManager", menuName = "ScriptableObjects/InputManager")]
-public class InputManager : ScriptableObject
+public class InputManager : MonoBehaviour
 {
-    List<PlayerEventAssignment> knownGamePads = new List<PlayerEventAssignment>();
+    List<PlayerEventAssignment> knownGamePads;
 
-    private void OnEnable()
-    {
-        InputSystem.onDeviceChange += OnDeviceStateChange;
-        UpdateFoundControllers();
-    }
+    public static InputManager Instance;
 
     private void Awake()
     {
+        if (Instance != null)
+            Destroy(gameObject);
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
         InputSystem.onDeviceChange += OnDeviceStateChange;
+        knownGamePads = new List<PlayerEventAssignment>();
+        for (int i = 0; i < 4; i++)
+        {
+            knownGamePads.Add(new PlayerEventAssignment(i));
+        }
         UpdateFoundControllers();
+    }
+
+    private void Update()
+    {
+        foreach (var entry in knownGamePads)
+            entry.Update();
+    }
+
+    public Vector2 GetLeftJoystick(int playerId)
+    {
+        foreach(var entry in knownGamePads)
+        {
+            if (entry.PlayerId == playerId)
+                return entry.LeftJoyStick;
+        }
+        return Vector2.zero;
+    }
+
+    public Vector2 GetRightJoystick(int playerId)
+    {
+        foreach (var entry in knownGamePads)
+        {
+            if (entry.PlayerId == playerId)
+                return entry.RightJoyStick;
+        }
+        return Vector2.zero;
+    }
+
+    public void AssignButton(string button, int playerId, Action onButton)
+    {
+        foreach (var entry in knownGamePads)
+        {
+            if (entry.PlayerId == playerId)
+            {
+                switch (button)
+                {
+                    case "A":
+                        entry.AssignAButton(onButton);
+                        break;
+                    case "B":
+                        entry.AssignBButton(onButton);
+                        break;
+                    case "X":
+                        entry.AssignXButton(onButton);
+                        break;
+                    case "Y":
+                        entry.AssignYButton(onButton);
+                        break;
+                }
+            }
+        }
+    }
+
+    public void UnlinkButtons(int playerId)
+    {
+
+    }
+
+    public void UnlinkButton(string button, int playerId)
+    {
+
     }
 
     private void OnDeviceStateChange(InputDevice device, InputDeviceChange state)
@@ -31,18 +97,22 @@ public class InputManager : ScriptableObject
             case InputDeviceChange.Added:
                 if (device is Gamepad)
                 {
-                    knownGamePads.Add(new PlayerEventAssignment(device as Gamepad, GetEarliestFreeNumber()));
-                    knownGamePads.Sort((a, b) => a.PlayerId.CompareTo(b.PlayerId));
+                    foreach (var entry in knownGamePads)
+                        if (!entry.HasGamePad)
+                            entry.AssignGamePad(device as Gamepad);
                 }
                 // New Device.
                 break;
             case InputDeviceChange.Disconnected:
-                foreach(var gamePad in knownGamePads)
-                    if(device is Gamepad && gamePad.UsesGamepad(device as Gamepad))
-                    {
-                        knownGamePads.Remove(gamePad);
-                        break;
-                    }
+                if (device is Gamepad)
+                {
+                    foreach (var gamePad in knownGamePads)
+                        if (gamePad.UsesGamepad(device as Gamepad))
+                        {
+                            gamePad.RemoveGamepad();
+                            break;
+                        }
+                }
                 // Device got unplugged.
                 break;
         }
@@ -67,26 +137,22 @@ public class InputManager : ScriptableObject
             {
                 continue;
             }
-            knownGamePads.Add(new PlayerEventAssignment(gamePad, GetEarliestFreeNumber()));
-            knownGamePads.Sort((a, b) => a.PlayerId.CompareTo(b.PlayerId));
+            foreach (var entry in knownGamePads)
+                if (!entry.HasGamePad)
+                    entry.AssignGamePad(gamePad);
         }
     }
 
     int GetEarliestFreeNumber()
     {
-        int lowestNumber = 1;
-        while(true)
-        {
-            if (!knownGamePads.Any(g => g.PlayerId == lowestNumber))
-                return lowestNumber;
-            lowestNumber++;
-        }
-        UnityEngine.Debug.LogError("InputManager - Couldn't get a free number.");
+        foreach (var entry in knownGamePads)
+            if (entry.HasGamePad)
+                return entry.PlayerId;
         return -1;
     }
 
-    public void HookUpPlayer(int playerId, Action aButtonEvent, Action bButtonEvent, Action xButtonEvent, Action yButtonEvent, Action<Vector2> leftStickUpdateEvent,
-            Action<Vector2> rightStickUpdateEvent)
+    public void HookUpPlayer(int playerId, Action aButtonEvent, Action bButtonEvent, Action xButtonEvent, Action yButtonEvent, 
+        Action<Vector2> leftStickUpdateEvent, Action<Vector2> rightStickUpdateEvent)
     {
         PlayerEventAssignment entry = knownGamePads.FirstOrDefault(g => g.PlayerId == playerId);
         if(entry == null)
@@ -99,6 +165,16 @@ public class InputManager : ScriptableObject
     {
         private Gamepad gamePad;
         UnityEvent<bool> enabledChanged = new UnityEvent<bool>();
+
+        readonly UnityEvent<bool> OnButtonA = new UnityEvent<bool>();
+        readonly UnityEvent<bool> OnButtonB = new UnityEvent<bool>();
+        readonly UnityEvent<bool> OnButtonX = new UnityEvent<bool>();
+        readonly UnityEvent<bool> OnButtonY = new UnityEvent<bool>();
+        readonly UnityEvent<Vector2> OnLeftStickUpdate = new UnityEvent<Vector2>();
+        readonly UnityEvent<Vector2> OnRightStickUpdate = new UnityEvent<Vector2>();
+
+        public Vector2 LeftJoyStick { get; private set; }
+        public Vector2 RightJoyStick { get; private set; }
 
         public int PlayerId { get; private set; }
 
@@ -116,15 +192,105 @@ public class InputManager : ScriptableObject
             }
         }
 
-        public PlayerEventAssignment(Gamepad gamePad, int playerId)
+        public bool HasGamePad => gamePad != null && gamePad.enabled;
+
+        public PlayerEventAssignment(int playerId)
         {
-            this.gamePad = gamePad;
             PlayerId = playerId;
+        }
+
+        public void Update()
+        {
+            if (gamePad != null && gamePad.enabled && gamePad.wasUpdatedThisFrame)
+            {
+                HandleButton(gamePad.aButton, OnButtonA);
+                HandleButton(gamePad.bButton, OnButtonB);
+                HandleButton(gamePad.xButton, OnButtonX);
+                HandleButton(gamePad.yButton, OnButtonY);
+                if(LeftJoyStick != gamePad.leftStick.ReadValue())
+                    LeftJoyStick = gamePad.leftStick.ReadValue();
+                if (RightJoyStick != gamePad.rightStick.ReadValue())
+                    RightJoyStick = gamePad.rightStick.ReadValue();
+            }
+        }
+
+        void HandleButton(ButtonControl button, UnityEvent<bool> buttonEvent)
+        {
+            if (button.wasPressedThisFrame)
+                buttonEvent.Invoke(true);
+            if (button.wasReleasedThisFrame)
+                buttonEvent.Invoke(false);
         }
 
         public bool UsesGamepad(Gamepad gamePad)
         {
             return this.gamePad == gamePad;
+        }
+
+        public void AssignGamePad(Gamepad gamepad)
+        {
+            this.gamePad = gamepad;
+        }
+
+        public void RemoveGamepad()
+        {
+            gamePad = null;
+        }
+
+        public void AssignAButton(Action onButton)
+        {
+            OnButtonA.AddListener(delegate {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
+        }
+
+        public void AssignBButton(Action onButton)
+        {
+            OnButtonB.AddListener(delegate {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
+        }
+
+        public void AssignXButton(Action onButton)
+        {
+            OnButtonX.AddListener(delegate {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
+        }
+
+        public void AssignYButton(Action onButton)
+        {
+            OnButtonY.AddListener(delegate {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
         }
     }
 }

@@ -16,7 +16,17 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        InputManager.Instance.AssignButton("B", 1, BButtonPressed);
+    }
+
+    void BButtonPressed()
+    {
+
+    }
+
+    void UpdateCameraMovement(Camera camera, Vector2 movement)
+    {
+
     }
 
     // Update is called once per frame
@@ -24,52 +34,13 @@ public class CameraMovement : MonoBehaviour
     {
         // Test
         // Camera Up
-        if (Input.GetKey(KeyCode.A) &&
-            cameraUp.transform.position.x <= 9f && 
-            cameraUp.transform.position.x >= -9f)
-        {
-            movementUp = new Vector3(-1,0f,0f);
-            cameraUp.transform.Translate(movementUp * moveSpeed * Time.deltaTime);
-
-            cameraUp.transform.position = new Vector3 (Mathf.Clamp( cameraUp.transform.position.x ,-9,9),cameraUp.transform.position.y, cameraUp.transform.position.z);
-        }
-
-        if (Input.GetKey(KeyCode.D) &&
-            cameraUp.transform.position.x <= 9f && 
-            cameraUp.transform.position.x >= -9f)
-        {
-            movementUp = new Vector3(1,0f,0f);
-            cameraUp.transform.Translate(movementUp * moveSpeed * Time.deltaTime);
-
-            cameraUp.transform.position = new Vector3 (Mathf.Clamp( cameraUp.transform.position.x ,-9,9),cameraUp.transform.position.y, cameraUp.transform.position.z);
-        }
-
-
-
+        movementUp = new Vector3(InputManager.Instance.GetRightJoystick(1).x, 0f);
+        cameraUp.transform.Translate(movementUp * moveSpeed * Time.deltaTime);
+        cameraUp.transform.position = new Vector3(Mathf.Clamp(cameraUp.transform.position.x, -9, 9), cameraUp.transform.position.y, cameraUp.transform.position.z);
 
         // Camera Down
-        if (Input.GetKey(KeyCode.LeftArrow) &&
-            cameraDown.transform.position.x <= 9f && 
-            cameraDown.transform.position.x >= -9f)
-        {
-            movementDown = new Vector3(-1,0f,0f);
-            cameraDown.transform.Translate(movementDown * moveSpeed * Time.deltaTime);
-
-            cameraDown.transform.position = new Vector3 (Mathf.Clamp( cameraDown.transform.position.x ,-9,9),cameraDown.transform.position.y, cameraDown.transform.position.z);
-        }
-
-            if (Input.GetKey(KeyCode.RightArrow) &&
-            cameraDown.transform.position.x <= 9f && 
-            cameraDown.transform.position.x >= -9f)
-        {
-            movementDown = new Vector3(1,0f,0f);
-            cameraDown.transform.Translate(movementDown * moveSpeed * Time.deltaTime);
-
-            cameraDown.transform.position = new Vector3 (Mathf.Clamp( cameraDown.transform.position.x ,-9,9),cameraDown.transform.position.y, cameraDown.transform.position.z);
-        }
-
-
-
-
+        movementDown = new Vector3(InputManager.Instance.GetRightJoystick(2).x, 0f);
+        cameraDown.transform.Translate(movementDown * moveSpeed * Time.deltaTime);
+        cameraDown.transform.position = new Vector3(Mathf.Clamp(cameraDown.transform.position.x, -9, 9), cameraDown.transform.position.y, cameraDown.transform.position.z);
     }
 }

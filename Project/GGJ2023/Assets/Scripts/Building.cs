@@ -20,6 +20,9 @@ public class Building : MonoBehaviour
     int productionWorker;
     [SerializeField]
     float friendzone;
+    [SerializeField]
+    float width;
+    public float Width => width;
 
     float WorkPerformance => workPerformance;
 
@@ -40,6 +43,11 @@ public class Building : MonoBehaviour
         int costs = 0;
 
         return costs;
+    }
+
+    public virtual MinionStates Interact(Minion minion)
+    {
+        return MinionStates.Idle;
     }
 
     void CurrentWorkPerformance()

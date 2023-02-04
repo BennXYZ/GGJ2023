@@ -12,7 +12,7 @@ public class Building : MonoBehaviour
     [SerializeField]
     int workers;
     [SerializeField]
-    float workPerformance; 
+    float workPerformance;
     [Space]
     [SerializeField]
     float timer;
@@ -24,25 +24,45 @@ public class Building : MonoBehaviour
     float width;
     public float Width => width;
 
+    bool isEnabled;
+    
     float WorkPerformance => workPerformance;
 
+    [SerializeField]
     float startTimer = 0f;
+    float consumputionDuration = 0.0f;
+    float consumptionTimer = 0;
 
     void Start()
     {
-        
+        isEnabled = true;
+        consumptionTimer = consumputionDuration;
     }
 
     void Update()
     {
-        
+
     }
 
     public int Tick(float deltaTime)
     {
-        int costs = 0;
 
-        return costs;
+        Debug.Log(deltaTime);
+        if (startTimer <= 0.0f && isEnabled)
+        {
+            consumptionTimer -= deltaTime;
+            if (consumptionTimer <= 0)
+            {
+                consumptionTimer += consumputionDuration;
+                return 1;
+            }
+        }
+        else
+        {
+            startTimer -= deltaTime;
+        }
+        return 0;
+        //        return cost/3600 * deltaTime;
     }
 
     public virtual MinionStates Interact(Minion minion)
@@ -50,8 +70,5 @@ public class Building : MonoBehaviour
         return MinionStates.Idle;
     }
 
-    void CurrentWorkPerformance()
-    {
-
-    }
+  
 }

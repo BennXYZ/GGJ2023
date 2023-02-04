@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldGameMAnager : MonoBehaviour
+public class WorldGameManager : MonoBehaviour
 {
+    [SerializeField]
+    ScriptableObject buildings;
     List<Building> listOfBuildings;
     int currentFoodCost;
 
@@ -19,12 +21,17 @@ public class WorldGameMAnager : MonoBehaviour
         
     }
 
-    void UpdateCosts()
+    void BuildMod()
     {
         
+    }
+
+    void UpdateCosts()
+    {
+        int result = 0;
         foreach (var build in listOfBuildings)
         {
-            int result = build.Tick(Time.deltaTime);
+            result += build.Tick(Time.deltaTime);
             
         }
     }

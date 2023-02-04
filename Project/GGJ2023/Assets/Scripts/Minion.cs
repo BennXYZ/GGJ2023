@@ -17,6 +17,8 @@ public class Minion : MonoBehaviour
     [SerializeField]
     float minIdleTime, maxIdleTime;
 
+    Building assignedBuilding;
+
     float idleTimeEnd;
 
     MinionStates previousState = MinionStates.Idle;
@@ -65,7 +67,8 @@ public class Minion : MonoBehaviour
     {
         //Has no Command. Wanders Around.
         {
-            targetPosition = transform.position.x + UnityEngine.Random.Range(minRandomWanderingRange, maxRandomWanderingRange) * (UnityEngine.Random.Range(0, 2) * 2 - 1);
+            targetPosition = assignedBuilding.transform.position.x + UnityEngine.Random.Range(minRandomWanderingRange, maxRandomWanderingRange) * 
+                (UnityEngine.Random.Range(0, 2) * 2 - 1);
             return MinionStates.Moving;
         }
         return MinionStates.Idle;
@@ -74,7 +77,7 @@ public class Minion : MonoBehaviour
     MinionStates UpdateMoving()
     {
         //Move towards goal.
-        bool targetIsRight = transform.position.x < targetPosition;
+        bool targetIsRight = assignedBuilding.transform.position.x < targetPosition;
         int directionMultiplier = targetIsRight ? 1 : -1;
         transform.Translate(Vector3.right * directionMultiplier * movementSpeed * Time.deltaTime);
         if (transform.position.x < targetPosition != targetIsRight)

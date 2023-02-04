@@ -94,17 +94,17 @@ public class InputManager : MonoBehaviour
                 switch (button)
                 {
                     case "A":
-                        return entry.gamePad.aButton.isPressed;
+                        return entry.GamePad.aButton.isPressed;
                     case "B":
-                        return entry.gamePad.bButton.isPressed;
+                        return entry.GamePad.bButton.isPressed;
                     case "X":
-                        return entry.gamePad.xButton.isPressed;
+                        return entry.GamePad.xButton.isPressed;
                     case "Y":
-                        return entry.gamePad.yButton.isPressed;
+                        return entry.GamePad.yButton.isPressed;
                     case "L":
-                        return entry.gamePad.leftShoulder.isPressed;
+                        return entry.GamePad.leftShoulder.isPressed;
                     case "R":
-                        return entry.gamePad.rightShoulder.isPressed;
+                        return entry.GamePad.rightShoulder.isPressed;
                 }
             }
         }
@@ -194,7 +194,7 @@ public class InputManager : MonoBehaviour
 
     public class PlayerEventAssignment
     {
-        public Gamepad gamePad { get; private set; }
+        public Gamepad GamePad { get; private set; }
         UnityEvent<bool> enabledChanged = new UnityEvent<bool>();
 
         readonly UnityEvent<bool> OnButtonA = new UnityEvent<bool>();
@@ -225,7 +225,7 @@ public class InputManager : MonoBehaviour
             }
         }
 
-        public bool HasGamePad => gamePad != null && gamePad.enabled;
+        public bool HasGamePad => GamePad != null && GamePad.enabled;
 
         public PlayerEventAssignment(int playerId)
         {
@@ -234,18 +234,18 @@ public class InputManager : MonoBehaviour
 
         public void Update()
         {
-            if (gamePad != null && gamePad.enabled && gamePad.wasUpdatedThisFrame)
+            if (GamePad != null && GamePad.enabled && GamePad.wasUpdatedThisFrame)
             {
-                HandleButton(gamePad.aButton, OnButtonA);
-                HandleButton(gamePad.bButton, OnButtonB);
-                HandleButton(gamePad.xButton, OnButtonX);
-                HandleButton(gamePad.yButton, OnButtonY);
-                HandleButton(gamePad.leftShoulder, OnButtonL);
-                HandleButton(gamePad.rightShoulder, OnButtonR);
-                if (LeftJoyStick != gamePad.leftStick.ReadValue())
-                    LeftJoyStick = gamePad.leftStick.ReadValue();
-                if (RightJoyStick != gamePad.rightStick.ReadValue())
-                    RightJoyStick = gamePad.rightStick.ReadValue();
+                HandleButton(GamePad.aButton, OnButtonA);
+                HandleButton(GamePad.bButton, OnButtonB);
+                HandleButton(GamePad.xButton, OnButtonX);
+                HandleButton(GamePad.yButton, OnButtonY);
+                HandleButton(GamePad.leftShoulder, OnButtonL);
+                HandleButton(GamePad.rightShoulder, OnButtonR);
+                if (LeftJoyStick != GamePad.leftStick.ReadValue())
+                    LeftJoyStick = GamePad.leftStick.ReadValue();
+                if (RightJoyStick != GamePad.rightStick.ReadValue())
+                    RightJoyStick = GamePad.rightStick.ReadValue();
             }
         }
 
@@ -259,17 +259,17 @@ public class InputManager : MonoBehaviour
 
         public bool UsesGamepad(Gamepad gamePad)
         {
-            return this.gamePad == gamePad;
+            return this.GamePad == gamePad;
         }
 
         public void AssignGamePad(Gamepad gamepad)
         {
-            this.gamePad = gamepad;
+            this.GamePad = gamepad;
         }
 
         public void RemoveGamepad()
         {
-            gamePad = null;
+            GamePad = null;
         }
 
         public void AssignAButton(Action onButton)

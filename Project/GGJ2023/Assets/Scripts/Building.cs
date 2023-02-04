@@ -28,6 +28,8 @@ public class Building : MonoBehaviour
     [SerializeField]
     Transform minionSpawnLocation;
 
+    List<Material> previewMaterials = new List<Material>();
+
     public float Width => width;
 
     bool isEnabled;
@@ -96,5 +98,35 @@ public class Building : MonoBehaviour
     public virtual MinionStates Interact(Minion minion)
     {
         return MinionStates.Idle;
+    }
+
+
+    public void UsePreviewMaterial(Shader shader, Color tintColor)
+    {
+        if (previewMaterials.Count == 0)
+        {
+            List<Renderer> renderers = new();
+            GetComponentsInChildren(true, renderers);
+            foreach (Renderer renderer in renderers)
+            {
+                Material[] materials = renderer.sharedMaterials;
+                Material[] newMaterials = new Material[materials.Length];
+                for (int i = 0; i < materials.Length; i++)
+                {
+                    newMaterials[i] = new Material(shader);
+                    newMaterials[i].SetTexture("BaseMap", materials[i].mainTexture);
+                    newMaterials[i].SetColor("TintColor", tintColor);
+                }
+                renderer.sharedMaterials = newMaterials;
+                previewMaterials.AddRange(newMaterials);
+            }
+        }
+        else
+        {
+            foreach (Material previewMaterial in previewMaterials)
+            {
+                previewMaterial.SetColor("TintColor", tintColor);
+            }
+        }
     }
 }

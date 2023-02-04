@@ -12,10 +12,10 @@ public class Minion : MonoBehaviour
 
 
     [SerializeField]
-    float movementSpeed, minRandomWanderingRange, maxRandomWanderingRange;
+    float movementSpeed = 3, minMovementDistance = 1;
 
     [SerializeField]
-    float minIdleTime, maxIdleTime;
+    float minIdleTime = 1, maxIdleTime = 3;
 
     Building assignedBuilding;
 
@@ -35,8 +35,13 @@ public class Minion : MonoBehaviour
             [MinionStates.Moving] = UpdateMoving,
         };
         enterStateMachine = new Dictionary<MinionStates, Action> { 
-            [MinionStates.Idle] = EnterIdle 
+            [MinionStates.Idle] = EnterIdle
         };
+
+        //Debugging
+        {
+            assignedBuilding = FindObjectOfType<Building>();
+        }
     }
 
     private void Update()
@@ -67,8 +72,14 @@ public class Minion : MonoBehaviour
     {
         //Has no Command. Wanders Around.
         {
-            targetPosition = assignedBuilding.transform.position.x + UnityEngine.Random.Range(minRandomWanderingRange, maxRandomWanderingRange) * 
-                (UnityEngine.Random.Range(0, 2) * 2 - 1);
+            targetPosition = assignedBuilding.transform.position.x + UnityEngine.Random.Range(-assignedBuilding.Width * 0.5f, assignedBuilding.Width * 0.5f);
+
+            if (Mathf.Abs(transform.position.x - targetPosition) < minMovementDistance)
+            {
+                float moveDirection = targetPosition - transform.position.x;
+                moveDirection = Mathf.Sign(moveDirection) * minMovementDistance;
+                targetPosition = transform.position.x + moveDirection;
+            }
             return MinionStates.Moving;
         }
         return MinionStates.Idle;
@@ -77,7 +88,7 @@ public class Minion : MonoBehaviour
     MinionStates UpdateMoving()
     {
         //Move towards goal.
-        bool targetIsRight = assignedBuilding.transform.position.x < targetPosition;
+        bool targetIsRight = transform.position.x < targetPosition;
         int directionMultiplier = targetIsRight ? 1 : -1;
         transform.Translate(Vector3.right * directionMultiplier * movementSpeed * Time.deltaTime);
         if (transform.position.x < targetPosition != targetIsRight)

@@ -20,6 +20,9 @@ public class Building : MonoBehaviour
     int productionWorker;
     [SerializeField]
     float friendzone;
+    [SerializeField]
+    float width;
+    public float Width => width;
 
     float WorkPerformance => workPerformance;
 

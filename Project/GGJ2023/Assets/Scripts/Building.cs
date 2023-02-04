@@ -22,7 +22,7 @@ public class Building : MonoBehaviour
     [SerializeField]
     float friendzone;
     [SerializeField]
-    float width;
+    float width = 3;
 
     [Space]
     [SerializeField]
@@ -97,6 +97,4 @@ public class Building : MonoBehaviour
     {
         return MinionStates.Idle;
     }
-
-
 }

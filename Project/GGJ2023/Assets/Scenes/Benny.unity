@@ -449,7 +449,7 @@ PrefabInstance:
     - target: {fileID: 5155737090718267847, guid: 12765abef7564804984e74da80c6cb19,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.41
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5155737090718267847, guid: 12765abef7564804984e74da80c6cb19,
         type: 3}
@@ -519,7 +519,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 1756167722}
-  name: 
   cost: 0
   workers: 3
   workPerformance: 0

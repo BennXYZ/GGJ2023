@@ -58,6 +58,15 @@ public class Minion : MonoBehaviour
         }
     }
 
+    public int TargetPrio()
+    {
+        if (assignedBuilding == null)
+            return 0;
+        if (currentState == MinionStates.Idle)
+            return 1;
+        return 2;
+    }
+
     void EnterIdle()
     {
         idleTimeEnd = Time.time + UnityEngine.Random.Range(minIdleTime, maxIdleTime);

@@ -4936,6 +4936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 1
+  minionPrefab: {fileID: 0}
   buildings: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1, type: 2}
   spawn: {fileID: 1657666902}
   cameraMoveSpeed: 4
@@ -5301,6 +5302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 2
+  minionPrefab: {fileID: 0}
   buildings: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1, type: 2}
   spawn: {fileID: 243977653}
   cameraMoveSpeed: 4

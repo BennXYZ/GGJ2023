@@ -111,8 +111,8 @@ Material:
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DisplaceStrength: 0.0053
-    - _DisplaceWaveSize: 2.19
-    - _DisplaceWaveSpeed: -1
+    - _DisplaceWaveSize: 17.58
+    - _DisplaceWaveSpeed: -0.08
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1

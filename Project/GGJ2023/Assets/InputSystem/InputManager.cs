@@ -85,6 +85,32 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    public bool IsButtonDown(string button, int playerId)
+    {
+        foreach (var entry in knownGamePads)
+        {
+            if (entry.PlayerId == playerId)
+            {
+                switch (button)
+                {
+                    case "A":
+                        return entry.gamePad.aButton.isPressed;
+                    case "B":
+                        return entry.gamePad.bButton.isPressed;
+                    case "X":
+                        return entry.gamePad.xButton.isPressed;
+                    case "Y":
+                        return entry.gamePad.yButton.isPressed;
+                    case "L":
+                        return entry.gamePad.leftShoulder.isPressed;
+                    case "R":
+                        return entry.gamePad.rightShoulder.isPressed;
+                }
+            }
+        }
+        return false;
+    }
+
     public void UnlinkButtons(int playerId)
     {
 
@@ -168,7 +194,7 @@ public class InputManager : MonoBehaviour
 
     public class PlayerEventAssignment
     {
-        private Gamepad gamePad;
+        public Gamepad gamePad { get; private set; }
         UnityEvent<bool> enabledChanged = new UnityEvent<bool>();
 
         readonly UnityEvent<bool> OnButtonA = new UnityEvent<bool>();

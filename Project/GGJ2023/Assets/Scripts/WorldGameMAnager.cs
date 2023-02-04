@@ -7,6 +7,12 @@ public class WorldGameManager : MonoBehaviour
 {
     [SerializeField]
     ScriptableObject buildings;
+
+    [SerializeField]
+    Minion minionPrefab;
+
+    public Minion MinionPrefab => minionPrefab;
+
     List<Building> listOfBuildings;
     int currentFoodCost;
 
@@ -65,7 +71,7 @@ public class WorldGameManager : MonoBehaviour
 
     private void Despawn(Minion unit)
     {
-        throw new NotImplementedException();
+
     }
 
     void BuildMod()

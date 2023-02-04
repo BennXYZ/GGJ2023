@@ -75,6 +75,12 @@ public class InputManager : MonoBehaviour
                     case "Y":
                         entry.AssignYButton(onButton);
                         break;
+                    case "L":
+                        entry.AssignLButton(onButton);
+                        break;
+                    case "R":
+                        entry.AssignRButton(onButton);
+                        break;
                 }
             }
         }
@@ -170,6 +176,8 @@ public class InputManager : MonoBehaviour
         readonly UnityEvent<bool> OnButtonB = new UnityEvent<bool>();
         readonly UnityEvent<bool> OnButtonX = new UnityEvent<bool>();
         readonly UnityEvent<bool> OnButtonY = new UnityEvent<bool>();
+        readonly UnityEvent<bool> OnButtonL = new UnityEvent<bool>();
+        readonly UnityEvent<bool> OnButtonR = new UnityEvent<bool>();
         readonly UnityEvent<Vector2> OnLeftStickUpdate = new UnityEvent<Vector2>();
         readonly UnityEvent<Vector2> OnRightStickUpdate = new UnityEvent<Vector2>();
 
@@ -207,7 +215,9 @@ public class InputManager : MonoBehaviour
                 HandleButton(gamePad.bButton, OnButtonB);
                 HandleButton(gamePad.xButton, OnButtonX);
                 HandleButton(gamePad.yButton, OnButtonY);
-                if(LeftJoyStick != gamePad.leftStick.ReadValue())
+                HandleButton(gamePad.leftShoulder, OnButtonL);
+                HandleButton(gamePad.rightShoulder, OnButtonR);
+                if (LeftJoyStick != gamePad.leftStick.ReadValue())
                     LeftJoyStick = gamePad.leftStick.ReadValue();
                 if (RightJoyStick != gamePad.rightStick.ReadValue())
                     RightJoyStick = gamePad.rightStick.ReadValue();
@@ -282,6 +292,34 @@ public class InputManager : MonoBehaviour
         public void AssignYButton(Action onButton)
         {
             OnButtonY.AddListener(delegate {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
+        }
+
+        public void AssignLButton(Action onButton)
+        {
+            OnButtonL.AddListener(delegate {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
+        }
+
+        public void AssignRButton(Action onButton)
+        {
+            OnButtonR.AddListener(delegate {
                 try
                 {
                     onButton.Invoke();

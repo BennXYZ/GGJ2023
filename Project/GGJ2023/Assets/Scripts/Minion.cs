@@ -21,6 +21,8 @@ public class Minion : MonoBehaviour
     Building nextAssignedBuilding;
     Building currentTargetBuilding;
 
+    Building homeBuilding;
+
     float idleTimeEnd;
 
     MinionStates previousState = MinionStates.Idle;

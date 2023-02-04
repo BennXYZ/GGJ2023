@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Building : MonoBehaviour
 {
+    public WorldGameManager manager;
+
     [SerializeField]
     string name;
     [SerializeField]
@@ -22,6 +25,11 @@ public class Building : MonoBehaviour
     float friendzone;
     [SerializeField]
     float width;
+
+    [Space]
+    [SerializeField]
+    Transform minionSpawnLocation;
+
     public float Width => width;
 
     bool isEnabled;
@@ -37,11 +45,33 @@ public class Building : MonoBehaviour
     {
         isEnabled = true;
         consumptionTimer = consumputionDuration;
+        if (workers > 0)
+            StartSpawningWorkers();
     }
 
     void Update()
     {
 
+    }
+
+    void StartSpawningWorkers()
+    {
+        StartCoroutine(SpawnWorkersCoroutine());
+    }
+
+    IEnumerator SpawnWorkersCoroutine()
+    {
+        int numberSpawned = 0;
+        while(numberSpawned < workers)
+        {
+            yield return new WaitForSeconds(timer);
+            SpawnWorker();
+        }
+    }
+
+    private void SpawnWorker()
+    {
+        Minion instance = Instantiate(manager.MinionPrefab, minionSpawnLocation != null ? minionSpawnLocation.position : transform.position, Quaternion.identity);
     }
 
     public int Tick(float deltaTime)

@@ -5,7 +5,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using System.Linq;
 using UnityEngine.InputSystem.Controls;
 
 public class InputManager : MonoBehaviour
@@ -151,7 +150,7 @@ public class InputManager : MonoBehaviour
         return -1;
     }
 
-    public void HookUpPlayer(int playerId, Action aButtonEvent, Action bButtonEvent, Action xButtonEvent, Action yButtonEvent, 
+    public void HookUpPlayer(int playerId, Action aButtonEvent, Action bButtonEvent, Action xButtonEvent, Action yButtonEvent,
         Action<Vector2> leftStickUpdateEvent, Action<Vector2> rightStickUpdateEvent)
     {
         PlayerEventAssignment entry = knownGamePads.FirstOrDefault(g => g.PlayerId == playerId);

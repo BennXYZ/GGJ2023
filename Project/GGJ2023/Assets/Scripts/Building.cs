@@ -5,8 +5,6 @@ using UnityEngine;
 public class Building : MonoBehaviour
 {
     [SerializeField]
-    string name;
-    [SerializeField]
     int cost;
     [Space]
     [SerializeField]
@@ -25,7 +23,7 @@ public class Building : MonoBehaviour
     public float Width => width;
 
     bool isEnabled;
-    
+
     float WorkPerformance => workPerformance;
 
     [SerializeField]
@@ -70,5 +68,5 @@ public class Building : MonoBehaviour
         return MinionStates.Idle;
     }
 
-  
+
 }

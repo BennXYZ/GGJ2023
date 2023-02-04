@@ -36,7 +36,7 @@ public class Minion : MonoBehaviour
             [MinionStates.Idle] = UpdateIdle,
             [MinionStates.Moving] = UpdateMoving,
         };
-        enterStateMachine = new Dictionary<MinionStates, Action> { 
+        enterStateMachine = new Dictionary<MinionStates, Action> {
             [MinionStates.Idle] = EnterIdle,
             [MinionStates.Moving] = EnterMoving
         };
@@ -102,7 +102,8 @@ public class Minion : MonoBehaviour
         {
             return MinionStates.Moving;
         }
-        return MinionStates.Idle;
+        // TODO(ms): Why is this here? Unreachable code.
+        // return MinionStates.Idle;
     }
 
     Building GetTargetBuilding()

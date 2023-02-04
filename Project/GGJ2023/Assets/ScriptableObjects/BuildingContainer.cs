@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Buildings", menuName ="ScriptableObjects/Buildings")]
-public class NewBehaviourScript : ScriptableObject
+public class BuildingContainer : ScriptableObject
 {
     [SerializeField]
-    List<Building> listOfBuildingsOver;
+    public List<Building> listOfBuildingsOver;
     [SerializeField]
-    List<Building> listOfBuildingsDown;
+    public List<Building> listOfBuildingsDown;
 }

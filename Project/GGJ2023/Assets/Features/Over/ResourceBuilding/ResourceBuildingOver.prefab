@@ -118,7 +118,7 @@ Transform:
   - {fileID: 6212642775754021568}
   - {fileID: 4628626579285186514}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6101873281645064127
 MonoBehaviour:
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4125c21d35de34aa1c54a429966115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
+  manager: {fileID: 0}
   cost: 0
   workers: 0
   workPerformance: 0
@@ -140,6 +140,7 @@ MonoBehaviour:
   productionWorker: 0
   friendzone: 0
   width: 0
+  minionSpawnLocation: {fileID: 0}
   startTimer: 0
 --- !u!1001 &2974388936447946648
 PrefabInstance:
@@ -172,7 +173,7 @@ PrefabInstance:
     - target: {fileID: 9183010385725486424, guid: 364d8753b9364e4418d0f7f92f892d99,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.394
+      value: -0.322
       objectReference: {fileID: 0}
     - target: {fileID: 9183010385725486424, guid: 364d8753b9364e4418d0f7f92f892d99,
         type: 3}
@@ -330,7 +331,7 @@ PrefabInstance:
     - target: {fileID: 9183010385725486424, guid: 364d8753b9364e4418d0f7f92f892d99,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.394
+      value: -0.284
       objectReference: {fileID: 0}
     - target: {fileID: 9183010385725486424, guid: 364d8753b9364e4418d0f7f92f892d99,
         type: 3}

@@ -16,4 +16,7 @@ MonoBehaviour:
   - {fileID: 6101873281645064127, guid: 47a0da6314eeb3c4eb3812005178c7c0, type: 3}
   - {fileID: 8131189463676946525, guid: 8b5c2b715bb62634993b5c3112db6f0f, type: 3}
   - {fileID: 1288296769883065742, guid: 12765abef7564804984e74da80c6cb19, type: 3}
-  listOfBuildingsDown: []
+  listOfBuildingsDown:
+  - {fileID: -2359018819170720862, guid: fad32d0104fa3e04d9dc7c33e4e56f49, type: 3}
+  - {fileID: -3505393008635252578, guid: 698969eeb934e924bbf2efcf395f1928, type: 3}
+  - {fileID: -6426802559088025019, guid: b28dec7502793de4a9313b85c0f1f2f2, type: 3}

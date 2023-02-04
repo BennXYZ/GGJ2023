@@ -5,23 +5,28 @@ using UnityEngine;
 
 public class WorldGameManager : MonoBehaviour
 {
-    enum GameState {Game, Build, Pause};
+    enum GameState { Game, Build, Pause }
 
-    [SerializeField] 
-    int playerID;
     [SerializeField]
-    ScriptableObject buildings;
-
+    int playerID;
     [SerializeField]
     Minion minionPrefab;
 
     public Minion MinionPrefab => minionPrefab;
 
+    [SerializeField]
     BuildingContainer buildings;
     [SerializeField]
     GameObject spawn;
+    [SerializeField]
+    Shader previewShader;
+    [SerializeField]
+    Color previewInvalid;
+    [SerializeField]
+    Color previewValid;
+
     [Space]
-    
+
     [SerializeField]
     float cameraMoveSpeed = 4.0f;
     [SerializeField]
@@ -31,11 +36,11 @@ public class WorldGameManager : MonoBehaviour
     [SerializeField]
     InputManager inputManager;
 
-    GameObject newBuilding;
-    List<Building> listOfBuildings;
+    Building newBuilding;
+    List<Building> listOfBuildings = new();
     int currentFoodCost;
     int maxNumberOfUnits;
-    List<Minion> existingUnits;
+    List<Minion> existingUnits = new();
     GameState gameState;
     Vector3 cameraMovement;
 
@@ -43,13 +48,12 @@ public class WorldGameManager : MonoBehaviour
     void Start()
     {
         gameState = GameState.Game;
+        inputManager.AssignButton("X", playerID, ToggleMode);
     }
 
     // Update is called once per frame
     void Update()
     {
-        inputManager.AssignButton("X",playerID, BuildMod);
-        
         if (gameState == GameState.Game)
         {
             inputManager.GetLeftJoystick(playerID);
@@ -57,8 +61,8 @@ public class WorldGameManager : MonoBehaviour
             cam.transform.Translate(cameraMovement * cameraMoveSpeed * Time.deltaTime);
             cam.transform.position = new Vector3(Mathf.Clamp(cam.transform.position.x, -9, 9), cam.transform.position.y, cam.transform.position.z);
 
-            inputManager.AssignButton("A",playerID, SetBuildingPosiotion);
-                
+            inputManager.AssignButton("A", playerID, SetBuildingPosition);
+
         }
 
     }
@@ -106,45 +110,39 @@ public class WorldGameManager : MonoBehaviour
 
     }
 
-    void BuildMod()
-    {   
-        if (gameState != GameState.Build)
+    void ToggleMode()
+    {
+        if (gameState == GameState.Game)
         {
-            
-            int buildingIndex = 0;
-            
-        
-            Debug.Log("Buildmod");
-            // enable UI elements
-            // show current build object on the center of the field of view
-            Vector3 spawnPosition = spawn.transform.position;
-
-            if (playerID == 1)
-            {   
-                newBuilding = Instantiate(buildings.listOfBuildingsOver[buildingIndex].gameObject,spawnPosition, Quaternion.Euler(0,180,0));
-                //newBuilding.transform.parent = spawn.transform;
-
-                // Disable build UI
-                Debug.Log(newBuilding.name);
-
-            }else if (playerID == 2){
-                newBuilding = Instantiate(buildings.listOfBuildingsDown[buildingIndex].gameObject, spawnPosition, Quaternion.Euler(0,180,0));
-                
-                
-                // Disable build UI
-                Debug.Log(newBuilding.name);
-            }else{
-                Debug.LogError("PlayerId out of range. PlayerId: " + playerID +".");
-            }
-            newBuilding.transform.parent = spawn.transform;
             gameState = GameState.Build;
-        
-            Debug.Log("camera");
+            InitializeBuildMode();
         }
-
+        else
+        {
+            gameState = GameState.Game;
+        }
     }
 
-    void SetBuildingPosiotion(){
+    void InitializeBuildMode()
+    {
+        int buildingIndex = 0;
+
+        Debug.Log("Buildmod");
+        // enable UI elements
+        // show current build object on the center of the field of view
+        Vector3 spawnPosition = spawn.transform.position;
+
+        IReadOnlyList<Building> buildingSelection = buildings.GetBuildingsByPlayerId(playerID);
+        Debug.Assert(buildingSelection != null, "Player id is invalid");
+        newBuilding = Instantiate(buildingSelection[buildingIndex], spawnPosition, Quaternion.Euler(0, 180, 0));
+        newBuilding.transform.parent = spawn.transform;
+        newBuilding.UsePreviewMaterial(previewShader, previewValid);
+
+        Debug.Log("camera");
+    }
+
+    void SetBuildingPosition()
+    {
 
     }
 
@@ -154,7 +152,7 @@ public class WorldGameManager : MonoBehaviour
         foreach (var build in listOfBuildings)
         {
             result += build.Tick(Time.deltaTime);
-            
+
         }
     }
 }

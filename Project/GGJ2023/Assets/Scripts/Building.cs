@@ -45,6 +45,11 @@ public class Building : MonoBehaviour
         return costs;
     }
 
+    public virtual MinionStates Interact(Minion minion)
+    {
+        return MinionStates.Idle;
+    }
+
     void CurrentWorkPerformance()
     {
 

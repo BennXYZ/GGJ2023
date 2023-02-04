@@ -18,6 +18,8 @@ public class Minion : MonoBehaviour
     float minIdleTime = 1, maxIdleTime = 3;
 
     Building assignedBuilding;
+    Building nextAssignedBuilding;
+    Building currentTargetBuilding;
 
     float idleTimeEnd;
 
@@ -35,7 +37,8 @@ public class Minion : MonoBehaviour
             [MinionStates.Moving] = UpdateMoving,
         };
         enterStateMachine = new Dictionary<MinionStates, Action> { 
-            [MinionStates.Idle] = EnterIdle
+            [MinionStates.Idle] = EnterIdle,
+            [MinionStates.Moving] = EnterMoving
         };
 
         //Debugging
@@ -68,21 +71,47 @@ public class Minion : MonoBehaviour
         return MinionStates.Idle;
     }
 
+    public void AssignBuilding(Building building)
+    {
+        nextAssignedBuilding = building;
+    }
+
+    void AttemptNextJob()
+    {
+        if (nextAssignedBuilding != assignedBuilding)
+            assignedBuilding = nextAssignedBuilding;
+    }
+
+    void CancelCurrentBuilding()
+    {
+
+    }
+
     private MinionStates EndIdle()
     {
         //Has no Command. Wanders Around.
         {
-            targetPosition = assignedBuilding.transform.position.x + UnityEngine.Random.Range(-assignedBuilding.Width * 0.5f, assignedBuilding.Width * 0.5f);
-
-            if (Mathf.Abs(transform.position.x - targetPosition) < minMovementDistance)
-            {
-                float moveDirection = targetPosition - transform.position.x;
-                moveDirection = Mathf.Sign(moveDirection) * minMovementDistance;
-                targetPosition = transform.position.x + moveDirection;
-            }
             return MinionStates.Moving;
         }
         return MinionStates.Idle;
+    }
+
+    Building GetTargetBuilding()
+    {
+        return assignedBuilding;
+    }
+
+    private void EnterMoving()
+    {
+        currentTargetBuilding = GetTargetBuilding();
+        targetPosition = currentTargetBuilding.transform.position.x + UnityEngine.Random.Range(-currentTargetBuilding.Width * 0.5f, currentTargetBuilding.Width * 0.5f);
+
+        if (Mathf.Abs(transform.position.x - targetPosition) < minMovementDistance)
+        {
+            float moveDirection = targetPosition - transform.position.x;
+            moveDirection = Mathf.Sign(moveDirection) * minMovementDistance;
+            targetPosition = transform.position.x + moveDirection;
+        }
     }
 
     MinionStates UpdateMoving()
@@ -92,7 +121,14 @@ public class Minion : MonoBehaviour
         int directionMultiplier = targetIsRight ? 1 : -1;
         transform.Translate(Vector3.right * directionMultiplier * movementSpeed * Time.deltaTime);
         if (transform.position.x < targetPosition != targetIsRight)
-            return MinionStates.Idle;
+        {
+            //TODO: Also Cancel if target is disabled
+            if (currentTargetBuilding == null)
+                return currentTargetBuilding.Interact(this);
+            else
+                CancelCurrentBuilding();
+
+        }
         return MinionStates.Moving;
     }
 }

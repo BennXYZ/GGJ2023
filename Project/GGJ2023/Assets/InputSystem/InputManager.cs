@@ -23,7 +23,7 @@ public class InputManager : MonoBehaviour
         knownGamePads = new List<PlayerEventAssignment>();
         for (int i = 0; i < 4; i++)
         {
-            knownGamePads.Add(new PlayerEventAssignment(i));
+            knownGamePads.Add(new PlayerEventAssignment(i + 1));
         }
         UpdateFoundControllers();
     }
@@ -170,7 +170,10 @@ public class InputManager : MonoBehaviour
             }
             foreach (var entry in knownGamePads)
                 if (!entry.HasGamePad)
+                {
                     entry.AssignGamePad(gamePad);
+                    break;
+                }
         }
     }
 

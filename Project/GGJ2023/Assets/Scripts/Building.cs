@@ -66,6 +66,7 @@ public class Building : MonoBehaviour
         {
             yield return new WaitForSeconds(timer);
             SpawnWorker();
+            numberSpawned++;
         }
     }
 

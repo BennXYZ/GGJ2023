@@ -7,6 +7,8 @@ public class Building : MonoBehaviour, IViewTarget
 {
     public World manager;
 
+    [SerializeField]
+    string buildingName;
 
     [field: SerializeField]
     public int Price { get; private set; }
@@ -47,7 +49,7 @@ public class Building : MonoBehaviour, IViewTarget
 
     bool isEnabled;
 
-    float WorkPerformance => workPerformance;
+    public float WorkPerformance => workPerformance;
     public int MaxNumberAssignedMinions => maxNumberAssignedMinions;
 
     public bool CanAssignMinions => assignedMinions.Count < MaxNumberAssignedMinions;
@@ -55,6 +57,8 @@ public class Building : MonoBehaviour, IViewTarget
     public float LocalPosition => transform.localPosition.x;
 
     public bool IsBuilding => true;
+
+    public string BuildingName => buildingName;
 
     [SerializeField]
     float startTimer = 0f;

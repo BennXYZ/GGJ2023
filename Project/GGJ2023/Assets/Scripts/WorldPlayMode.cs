@@ -71,6 +71,17 @@ internal class WorldPlayMode : WorldMode
 
     public override void Update()
     {
+    }
 
+    public override string GetBuildingTitle()
+    {
+        return World.ViewTargets[focussedViewTarget].BuildingName;
+    }
+
+    public override string GetBuildingCapacity()
+    {
+        if(World.ViewTargets[focussedViewTarget].IsBuilding)
+            return (World.ViewTargets[focussedViewTarget] as Building).WorkPerformance.ToString();
+        return "";
     }
 }

@@ -5,4 +5,6 @@
     float Width { get; }
 
     bool IsBuilding { get; }
+
+    string BuildingName { get; }
 }

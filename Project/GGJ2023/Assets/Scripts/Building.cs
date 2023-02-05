@@ -13,12 +13,16 @@ public class Building : MonoBehaviour
     [SerializeField]
     int workers;
     [SerializeField]
+    float workerSpawnDelay;
+    [SerializeField]
     float workPerformance;
     [Space]
     [SerializeField]
     float timer;
     [SerializeField]
     int productionWorker;
+    [SerializeField]
+    int maxNumberAssignedMinions;
     [SerializeField]
     float friendzone;
     [SerializeField]
@@ -30,11 +34,17 @@ public class Building : MonoBehaviour
 
     List<Material> previewMaterials = new List<Material>();
 
+    List<Minion> assignedMinions = new List<Minion>();
+    List<Minion> spawnedMinions = new List<Minion>();
+
     public float Width => width;
 
     bool isEnabled;
 
     float WorkPerformance => workPerformance;
+    public int MaxNumberAssignedMinions => maxNumberAssignedMinions;
+
+    public bool CanAssignMinions => assignedMinions.Count < MaxNumberAssignedMinions;
 
     [SerializeField]
     float startTimer = 0f;
@@ -64,7 +74,7 @@ public class Building : MonoBehaviour
         int numberSpawned = 0;
         while(numberSpawned < workers)
         {
-            yield return new WaitForSeconds(timer);
+            yield return new WaitForSeconds(workerSpawnDelay);
             SpawnWorker();
             numberSpawned++;
         }
@@ -73,6 +83,9 @@ public class Building : MonoBehaviour
     private void SpawnWorker()
     {
         Minion instance = Instantiate(manager.MinionPrefab, minionSpawnLocation != null ? minionSpawnLocation.position : transform.position, Quaternion.identity);
+        spawnedMinions.Add(instance);
+        instance.SetHome(this);
+        manager.MinionSpawned(instance);
     }
 
     public int Tick(float deltaTime)
@@ -94,6 +107,12 @@ public class Building : MonoBehaviour
         }
         return 0;
         //        return cost/3600 * deltaTime;
+    }
+
+    public void AssignMinion(Minion minion)
+    {
+        assignedMinions.Add(minion);
+        minion.AssignBuilding(this);
     }
 
     public virtual MinionStates Interact(Minion minion)

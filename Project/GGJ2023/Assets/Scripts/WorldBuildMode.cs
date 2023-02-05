@@ -83,7 +83,12 @@ internal class WorldBuildMode : WorldMode
         Vector3 cameraMovement = new Vector3(InputManager.Instance.GetLeftJoystick((int)World.PlayerID).x, 0f);
         Camera camera = World.UsedCamera;
         camera.transform.Translate(World.CameraMoveSpeed * Time.deltaTime * cameraMovement);
-        camera.transform.position = new Vector3(Mathf.Clamp(camera.transform.position.x, -9, 9), camera.transform.position.y, camera.transform.position.z);
+        Vector3 localCameraPosition = camera.transform.localPosition;
+        if (localCameraPosition.x < World.MinCameraPosition)
+            localCameraPosition.x = World.MinCameraPosition;
+        if (localCameraPosition.x > World.MaxCameraPosition)
+            localCameraPosition.x = World.MaxCameraPosition;
+        camera.transform.localPosition = localCameraPosition;
 
         SetBuildBlocker(BuildBlocker.Price, World.Resources < previewBuilding.Price);
         bool blocked = false;
@@ -96,7 +101,7 @@ internal class WorldBuildMode : WorldMode
                 break;
             }
         }
-        SetBuildBlocker(BuildBlocker.Location, blocked); // TODO(ms): Calculate proper location here
+        SetBuildBlocker(BuildBlocker.Location, blocked);
     }
 
     private void SetBuildBlocker(BuildBlocker blocker, bool set)

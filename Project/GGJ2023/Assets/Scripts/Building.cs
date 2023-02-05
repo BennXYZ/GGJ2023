@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Building : MonoBehaviour
+public class Building : MonoBehaviour, IViewTarget
 {
     public World manager;
 
@@ -50,6 +50,10 @@ public class Building : MonoBehaviour
     public int MaxNumberAssignedMinions => maxNumberAssignedMinions;
 
     public bool CanAssignMinions => assignedMinions.Count < MaxNumberAssignedMinions;
+
+    public float LocalPosition => transform.localPosition.x;
+
+    public bool IsBuilding => true;
 
     [SerializeField]
     float startTimer = 0f;

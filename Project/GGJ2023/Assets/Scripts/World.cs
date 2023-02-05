@@ -17,7 +17,7 @@ public class World : MonoBehaviour
 
     [field: SerializeField]
     public BuildingContainer Buildings { get; private set; }
-    [field:SerializeField]
+    [field: SerializeField]
     public Transform Spawn { get; private set; }
 
     [field: SerializeField]
@@ -34,14 +34,20 @@ public class World : MonoBehaviour
     Camera usedCamera;
     public Camera UsedCamera => usedCamera;
 
+    [SerializeField]
+    private FoodPoint foodPoint;
+    public FoodPoint FoodPoint => foodPoint;
+
     [Space]
     [SerializeField]
     InputManager inputManager;
 
     List<Building> existingBuildings = new();
     public IReadOnlyList<Building> ExistingBuildings => existingBuildings;
+    List<IViewTarget> viewTargets = new();
+    public IReadOnlyList<IViewTarget> ViewTargets => viewTargets;
+
     List<Minion> existingUnits = new();
-    Building newBuilding;
     int currentFoodCost;
     int CurrentlyAvailableMinions
     {
@@ -51,6 +57,13 @@ public class World : MonoBehaviour
     {
         get => existingUnits.Count;
     }
+
+    [SerializeField]
+    private float additionalBuildArea;
+
+    public float MinCameraPosition => ViewTargets[ViewTargets.Count - 1].LocalPosition - additionalBuildArea;
+    public float MaxCameraPosition => ViewTargets[0].LocalPosition + additionalBuildArea;
+
     Vector3 cameraMovement;
 
     private WorldGenerator worldGenerator;
@@ -63,14 +76,18 @@ public class World : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        viewTargets.Add(foodPoint);
+
         buildMode = new WorldBuildMode(this);
         playMode = new WorldPlayMode(this);
 
         Debug.Assert(Buildings, "No buildings object assigned");
-        inputManager.AssignButton("X", (int)playerID, ToggleMode);
-        inputManager.AssignButton("L", (int)playerID, buildMode.PreviousBuilding);
-        inputManager.AssignButton("R", (int)playerID, buildMode.NextBuilding);
-        inputManager.AssignButton("A", (int)playerID, buildMode.Build);
+        inputManager.AssignButton(InputManager.X_KEY, (int)playerID, ToggleMode);
+        inputManager.AssignButton(InputManager.L_KEY, (int)playerID, buildMode.PreviousBuilding);
+        inputManager.AssignButton(InputManager.R_KEY, (int)playerID, buildMode.NextBuilding);
+        inputManager.AssignButton(InputManager.A_KEY, (int)playerID, buildMode.Build);
+        inputManager.AssignButton(InputManager.LEFT_KEY, (int)playerID, playMode.MoveNegative);
+        inputManager.AssignButton(InputManager.RIGHT_KEY, (int)playerID, playMode.MovePositive);
 
         worldGenerator = gameObject.AddComponent<WorldGenerator>();
         worldGenerator.Initialize(Buildings, groundOffset);
@@ -83,15 +100,34 @@ public class World : MonoBehaviour
     {
         Building newBuilding = Instantiate(buildingPrefab, Spawn.position, Quaternion.identity, transform);
         Resources -= newBuilding.Price;
-        for (int i = 0; i < existingBuildings.Count; i++)
-        {
-            if (existingBuildings[i].transform.position.x < newBuilding.transform.position.x)
+        { // Add to buildings
+            bool added = false;
+            for (int i = 0; i < existingBuildings.Count; i++)
             {
-                existingBuildings.Insert(i, newBuilding);
-                return;
+                if (existingBuildings[i].LocalPosition < newBuilding.LocalPosition)
+                {
+                    existingBuildings.Insert(i, newBuilding);
+                    added = true;
+                    break;
+                }
             }
+            if (!added)
+                existingBuildings.Add(newBuilding);
         }
-        existingBuildings.Add(newBuilding);
+        { // Add to viewtargets
+            bool added = false;
+            for (int i = 0; i < viewTargets.Count; i++)
+            {
+                if (viewTargets[i].LocalPosition < newBuilding.LocalPosition)
+                {
+                    viewTargets.Insert(i, newBuilding);
+                    added = true;
+                    break;
+                }
+            }
+            if (!added)
+                viewTargets.Add(newBuilding);
+        }
     }
 
     // Update is called once per frame
@@ -111,9 +147,9 @@ public class World : MonoBehaviour
     /// <param name="minion"></param>
     void CheckBuildingsToAssign(Minion minion)
     {
-        foreach(Building building in existingBuildings)
+        foreach (Building building in existingBuildings)
         {
-            if(building.CanAssignMinions)
+            if (building.CanAssignMinions)
             {
                 building.AssignMinion(minion);
                 return;
@@ -142,7 +178,7 @@ public class World : MonoBehaviour
     {
         for (int i = 0; i < building.MaxNumberAssignedMinions; i++)
         {
-            foreach(Minion minion in existingUnits)
+            foreach (Minion minion in existingUnits)
             {
                 if (minion.TargetPrio() == 0)
                     building.AssignMinion(minion);

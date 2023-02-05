@@ -279,6 +279,10 @@ public class InputManager : MonoBehaviour
                 HandleButton(GamePad.yButton, OnButtonY);
                 HandleButton(GamePad.leftShoulder, OnButtonL);
                 HandleButton(GamePad.rightShoulder, OnButtonR);
+                HandleButton(GamePad.dpad.down, OnButtonDown);
+                HandleButton(GamePad.dpad.left, OnButtonLeft);
+                HandleButton(GamePad.dpad.right, OnButtonRight);
+                HandleButton(GamePad.dpad.up, OnButtonUp);
                 if (LeftJoyStick != GamePad.leftStick.ReadValue())
                     LeftJoyStick = GamePad.leftStick.ReadValue();
                 if (RightJoyStick != GamePad.rightStick.ReadValue())

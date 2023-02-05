@@ -7,5 +7,5 @@ public class FoodPoint : MonoBehaviour, IViewTarget
 
     [SerializeField]
     private float width;
-    public float Width => Width / 2;
+    public float Width => width / 2;
 }

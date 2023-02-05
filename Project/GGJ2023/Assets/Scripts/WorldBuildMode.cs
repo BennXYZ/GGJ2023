@@ -101,6 +101,13 @@ internal class WorldBuildMode : WorldMode
                 break;
             }
         }
+
+        if (!blocked)
+        {
+            float distance = Mathf.Abs(World.FoodPoint.transform.position.x - previewBuilding.transform.position.x);
+            blocked = (distance < World.FoodPoint.Width + previewBuilding.Width);
+        }
+
         SetBuildBlocker(BuildBlocker.Location, blocked);
     }
 

@@ -67,7 +67,6 @@ public class Building : MonoBehaviour, IViewTarget
         consumptionTimer = consumputionDuration;
         if (workers > 0)
             StartSpawningWorkers();
-        SpawnRoots();
     }
 
     void Update()

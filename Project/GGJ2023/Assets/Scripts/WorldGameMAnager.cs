@@ -4,30 +4,6 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerType
-{
-    Over,
-    Under
-}
-
-public abstract class WorldMode
-{
-    public WorldGameManager World { get; private set; }
-
-    protected WorldMode(WorldGameManager worldGameManager)
-    {
-        World = worldGameManager;
-    }
-
-    public bool Active { get; set; }
-
-    public abstract void Shutdown();
-
-    public abstract void Update();
-
-    public abstract void Startup();
-}
-
 public class WorldGameManager : MonoBehaviour
 {
     [SerializeField]
@@ -255,4 +231,28 @@ public class WorldGameManager : MonoBehaviour
             result += building.Tick(Time.deltaTime);
         }
     }
+}
+
+public enum PlayerType
+{
+    Over,
+    Under
+}
+
+public abstract class WorldMode
+{
+    public WorldGameManager World { get; private set; }
+
+    protected WorldMode(WorldGameManager worldGameManager)
+    {
+        World = worldGameManager;
+    }
+
+    public bool Active { get; set; }
+
+    public abstract void Shutdown();
+
+    public abstract void Update();
+
+    public abstract void Startup();
 }

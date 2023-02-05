@@ -143,7 +143,9 @@ public class Building : MonoBehaviour, IViewTarget
         if (Manager.RootPrefab != null)
             for (int i = 0; i < rootCount; i++)
             {
-                spawnedRoots.Add(Instantiate(Manager.RootPrefab, GetRootPosition(i), Manager.RootPrefab.transform.rotation, transform));
+                float pos = GetRootPosition(i).x;
+                if(!Manager.CollidesWithOtherBuilding(pos))
+                    spawnedRoots.Add(Instantiate(Manager.RootPrefab, GetRootPosition(i), Manager.RootPrefab.transform.rotation, transform));
             }
     }
 

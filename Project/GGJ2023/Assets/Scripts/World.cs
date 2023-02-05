@@ -155,6 +155,21 @@ public class World : MonoBehaviour
         otherWorld.OtherBuildingBuilt(newBuilding);
     }
 
+    public bool CollidesWithOtherBuilding(float pos)
+    {
+        return otherWorld.AnyBuildingsAtPoint(pos);
+    }
+
+    private bool AnyBuildingsAtPoint(float pos)
+    {
+        foreach(var build in existingBuildings)
+        {
+            if (pos > build.transform.position.x - build.Width && pos < build.transform.position.x + build.Width)
+                return true;
+        }
+        return false;
+    }
+
     // Update is called once per frame
     void Update()
     {

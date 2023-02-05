@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4125c21d35de34aa1c54a429966115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
+  Manager: {fileID: 0}
   buildingName: Bush
   <Price>k__BackingField: 40
   workers: 0
@@ -143,7 +143,7 @@ MonoBehaviour:
   resourceTicker: 3
   resourcesPerTick: 2
   maxNumberAssignedMinions: 0
-  width: 0
+  width: 2
   rootWidth: 3
   rootCount: 5
   rootHeightDisplacement: -7.92

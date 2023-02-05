@@ -13,7 +13,11 @@ public class World : MonoBehaviour
     [SerializeField]
     Minion minionPrefab;
 
+    [SerializeField]
+    GameObject rootPrefab;
+
     public Minion MinionPrefab => minionPrefab;
+    public GameObject RootPrefab => rootPrefab;
 
     [field: SerializeField]
     public BuildingContainer Buildings { get; private set; }

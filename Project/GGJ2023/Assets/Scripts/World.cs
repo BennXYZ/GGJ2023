@@ -12,6 +12,9 @@ public class World : MonoBehaviour
     public PlayerType PlayerID => playerID;
 
     [SerializeField]
+    World otherWorld;
+
+    [SerializeField]
     Minion minionPrefab;
 
     [SerializeField]
@@ -75,8 +78,6 @@ public class World : MonoBehaviour
     public float MinCameraPosition => ViewTargets[ViewTargets.Count - 1].LocalPosition - additionalBuildArea;
     public float MaxCameraPosition => ViewTargets[0].LocalPosition + additionalBuildArea;
 
-    Vector3 cameraMovement;
-
     private WorldGenerator worldGenerator;
 
     WorldBuildMode buildMode;
@@ -105,6 +106,16 @@ public class World : MonoBehaviour
         worldGenerator.RefreshGround(usedCamera.transform.localPosition.x, playerID);
 
         SetActiveWorldMode(playMode);
+    }
+
+    public void GainResource(int amount)
+    {
+        Resources += amount;
+    }
+
+    public void EatResource()
+    {
+        Resources--;
     }
 
     public void AddBuilding(Building buildingPrefab)
@@ -139,6 +150,8 @@ public class World : MonoBehaviour
             if (!added)
                 viewTargets.Add(newBuilding);
         }
+        newBuilding.CreateBuilding();
+        otherWorld.OtherBuildingBuilt(newBuilding);
     }
 
     // Update is called once per frame
@@ -146,6 +159,22 @@ public class World : MonoBehaviour
     {
         currentWorldMode?.Update();
         UpdateUI();
+    }
+
+    public void OtherBuildingBuilt(Building building)
+    {
+        foreach (Building build in ExistingBuildings)
+        {
+            build.PotentiallyDestroyRoots(building.transform.position.x - building.Width, building.transform.position.x + building.Width);
+        }
+    }
+
+    public void OtherBuildingDestroyed(Building building)
+    {
+        foreach(Building build in ExistingBuildings)
+        {
+            build.PotentiallyRegrowRoots(building.transform.position.x - building.Width, building.transform.position.x + building.Width);
+        }
     }
 
     private void UpdateUI()
@@ -284,15 +313,6 @@ public class World : MonoBehaviour
         {
             currentWorldMode.Active = true;
             currentWorldMode.Startup();
-        }
-    }
-
-    void UpdateCosts()
-    {
-        int result = 0;
-        foreach (Building building in existingBuildings)
-        {
-            result += building.Tick(Time.deltaTime);
         }
     }
 }

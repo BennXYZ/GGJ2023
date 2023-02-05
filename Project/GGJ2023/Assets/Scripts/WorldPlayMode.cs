@@ -81,7 +81,7 @@ internal class WorldPlayMode : WorldMode
     public override string GetBuildingCapacity()
     {
         if(World.ViewTargets[focussedViewTarget].IsBuilding)
-            return (World.ViewTargets[focussedViewTarget] as Building).WorkPerformance.ToString();
+            return ((World.ViewTargets[focussedViewTarget] as Building).WorkPerformance * 100).ToString();
         return "";
     }
 }

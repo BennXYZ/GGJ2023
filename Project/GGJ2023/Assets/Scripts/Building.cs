@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Building : MonoBehaviour, IViewTarget
 {
@@ -18,12 +19,17 @@ public class Building : MonoBehaviour, IViewTarget
     [SerializeField]
     float workerSpawnDelay;
     [SerializeField]
-    float workPerformance;
+    bool usesMinions = true;
     [Space]
     [SerializeField]
     float timer;
     [SerializeField]
     int productionWorker;
+
+    [SerializeField]
+    float resourceTicker = 0;
+    [SerializeField]
+    int resourcesPerTick = 1;
     [SerializeField]
     int maxNumberAssignedMinions;
     [SerializeField]
@@ -34,6 +40,8 @@ public class Building : MonoBehaviour, IViewTarget
     int rootCount = 4;
     [SerializeField]
     float rootHeightDisplacement = 3;
+
+    float resourceTimestamp;
 
     [Space]
     [SerializeField]
@@ -49,7 +57,17 @@ public class Building : MonoBehaviour, IViewTarget
 
     bool isEnabled;
 
-    public float WorkPerformance => workPerformance;
+    public float WorkPerformance
+    {
+        get
+        {
+            if (!usesMinions)
+                return 1f;
+            if(rootCount > 0)
+                return (float)Mathf.Min(spawnedRoots.Count(s => s != null), assignedMinions.Count) / (float)rootCount;
+            return 1f;
+        }
+    }
     public int MaxNumberAssignedMinions => maxNumberAssignedMinions;
 
     public bool CanAssignMinions => assignedMinions.Count < MaxNumberAssignedMinions;
@@ -60,22 +78,29 @@ public class Building : MonoBehaviour, IViewTarget
 
     public string BuildingName => buildingName;
 
-    [SerializeField]
-    float startTimer = 0f;
-    float consumputionDuration = 0.0f;
-    float consumptionTimer = 0;
-
     void Start()
     {
         isEnabled = true;
-        consumptionTimer = consumputionDuration;
-        if (workers > 0)
-            StartSpawningWorkers();
     }
 
     void Update()
     {
+        if(resourceTicker > 0 && resourcesPerTick > 0)
+        {
+            if(Time.time > resourceTimestamp + resourceTicker)
+            {
+                resourceTimestamp = Time.time;
+                manager.GainResource(resourcesPerTick);
+            }
+        }
+    }
 
+    public void CreateBuilding()
+    {
+        resourceTimestamp = Time.time;
+        if (workers > 0)
+            StartSpawningWorkers();
+        SpawnRoots();
     }
 
     void StartSpawningWorkers()
@@ -100,27 +125,6 @@ public class Building : MonoBehaviour, IViewTarget
         spawnedMinions.Add(instance);
         instance.SetHome(this);
         manager.MinionSpawned(instance);
-    }
-
-    public int Tick(float deltaTime)
-    {
-
-        Debug.Log(deltaTime);
-        if (startTimer <= 0.0f && isEnabled)
-        {
-            consumptionTimer -= deltaTime;
-            if (consumptionTimer <= 0)
-            {
-                consumptionTimer += consumputionDuration;
-                return 1;
-            }
-        }
-        else
-        {
-            startTimer -= deltaTime;
-        }
-        return 0;
-        //        return cost/3600 * deltaTime;
     }
 
     public void AssignMinion(Minion minion)
@@ -178,6 +182,47 @@ public class Building : MonoBehaviour, IViewTarget
         for (int i = 0; i < rootCount; i++)
         {
             Gizmos.DrawSphere(GetRootPosition(i), 0.2f);
+        }
+    }
+
+    public void PotentiallyDestroyRoots(float leftBorder, float rightBorder)
+    {
+        for (int i = 0; i < rootCount; i++)
+        {
+            float rootPos = GetRootPosition(i).x;
+            if (rootPos > leftBorder && rootPos < rightBorder)
+            {
+                TryDeleteRoots(i);
+            }
+        }
+    }
+
+    public void PotentiallyRegrowRoots(float leftBorder, float rightBorder)
+    {
+        for (int i = 0; i < rootCount; i++)
+        {
+            float rootPos = GetRootPosition(i).x;
+            if (rootPos > leftBorder && rootPos < rightBorder)
+            {
+                TryRegrowRoots(i);
+            }
+        }
+    }
+
+    private void TryRegrowRoots(int i)
+    {
+        if (spawnedRoots[i] == null)
+        {
+            spawnedRoots[i] = Instantiate(manager.RootPrefab, GetRootPosition(i), manager.RootPrefab.transform.rotation, transform);
+        }
+    }
+
+    private void TryDeleteRoots(int i)
+    {
+        if(spawnedRoots[i] != null)
+        {
+            Destroy(spawnedRoots[i]);
+            spawnedRoots[i] = null;
         }
     }
 

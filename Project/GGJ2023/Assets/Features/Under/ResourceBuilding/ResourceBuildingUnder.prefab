@@ -31,7 +31,7 @@ Transform:
   m_Children:
   - {fileID: 1500648897362081574}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-2359018819170720862
 MonoBehaviour:
@@ -46,15 +46,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  cost: 0
+  buildingName: Foodling
+  <Price>k__BackingField: 40
   workers: 0
-  workPerformance: 0
+  workerSpawnDelay: 0
+  usesMinions: 1
   timer: 0
   productionWorker: 0
-  friendzone: 0
-  width: 3
+  resourceTicker: 3
+  resourcesPerTick: 2
+  maxNumberAssignedMinions: 0
+  width: 0
+  rootWidth: 3
+  rootCount: 5
+  rootHeightDisplacement: 10.9
   minionSpawnLocation: {fileID: 0}
-  startTimer: 0
 --- !u!1 &7017622979079564070
 GameObject:
   m_ObjectHideFlags: 0

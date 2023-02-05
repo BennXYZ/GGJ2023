@@ -31,7 +31,7 @@ Transform:
   m_Children:
   - {fileID: 2338193005422769853}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-6426802559088025019
 MonoBehaviour:
@@ -46,15 +46,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  cost: 0
-  workers: 0
-  workPerformance: 0
+  buildingName: Mushroom
+  <Price>k__BackingField: 80
+  workers: 10
+  workerSpawnDelay: 1
+  usesMinions: 0
   timer: 0
   productionWorker: 0
-  friendzone: 0
+  resourceTicker: 3
+  resourcesPerTick: -1
+  maxNumberAssignedMinions: 0
   width: 3
+  rootWidth: 5
+  rootCount: 4
+  rootHeightDisplacement: 10.9
   minionSpawnLocation: {fileID: 0}
-  startTimer: 0
 --- !u!1001 &2880148010295857494
 PrefabInstance:
   m_ObjectHideFlags: 0

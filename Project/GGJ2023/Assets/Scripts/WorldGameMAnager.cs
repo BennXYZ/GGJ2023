@@ -20,6 +20,10 @@ public class WorldGameManager : MonoBehaviour
     BuildingContainer buildings;
     [SerializeField]
     GameObject spawn;
+
+    [SerializeField]
+    private float groundOffset;
+
     [Space]
 
     [SerializeField]
@@ -39,6 +43,8 @@ public class WorldGameManager : MonoBehaviour
     GameState gameState;
     Vector3 cameraMovement;
 
+    HashSet<int> existingWorldSegments = new();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,9 +53,28 @@ public class WorldGameManager : MonoBehaviour
         inputManager.AssignButton("X", (int)playerID, ToggleMode);
     }
 
+    private void CreateRandomGround(int offset)
+    {
+        if (!existingWorldSegments.Contains(offset))
+        {
+            IReadOnlyList<Transform> worldSegments = buildings.GetWorldSegments(playerID);
+            Transform prefab = worldSegments[UnityEngine.Random.Range(0, worldSegments.Count - 1)];
+            Instantiate(prefab, transform.position + new Vector3(offset * 5, groundOffset, 0), Quaternion.identity, transform);
+
+            existingWorldSegments.Add(offset);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
+        int possibleSpawnLocations = (int)(cam.transform.position.x) / 5 + Math.Sign(cam.transform.position.x);
+
+        for (int i = 0; i < 9; i++)
+        {
+            CreateRandomGround(possibleSpawnLocations + i - 5);
+        }
+
         if (gameState == GameState.Game)
         {
             inputManager.GetLeftJoystick((int)playerID);

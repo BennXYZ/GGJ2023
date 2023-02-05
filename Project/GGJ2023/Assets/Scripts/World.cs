@@ -174,6 +174,9 @@ public class World : MonoBehaviour
     void Update()
     {
         currentWorldMode?.Update();
+
+        foodPoint.SetFoodCount(Resources / 100);
+
         UpdateUI();
     }
 

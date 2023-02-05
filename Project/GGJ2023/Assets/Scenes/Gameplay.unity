@@ -326,6 +326,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 338965982738840564, guid: c1259e17ea4cb934d8730b17501c19bc,
         type: 3}
+      propertyPath: foodPrefab
+      value: 
+      objectReference: {fileID: 9183010385725486424, guid: 364d8753b9364e4418d0f7f92f892d99,
+        type: 3}
+    - target: {fileID: 338965982738840564, guid: c1259e17ea4cb934d8730b17501c19bc,
+        type: 3}
       propertyPath: growthSpeed
       value: 0.0001
       objectReference: {fileID: 0}
@@ -2267,9 +2273,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 338965982738840564, guid: c1259e17ea4cb934d8730b17501c19bc,
         type: 3}
+      propertyPath: worm
+      value: 
+      objectReference: {fileID: 204909772}
+    - target: {fileID: 338965982738840564, guid: c1259e17ea4cb934d8730b17501c19bc,
+        type: 3}
       propertyPath: startSize
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 338965982738840564, guid: c1259e17ea4cb934d8730b17501c19bc,
+        type: 3}
+      propertyPath: foodPrefab
+      value: 
+      objectReference: {fileID: 9183010385725486424, guid: 364d8753b9364e4418d0f7f92f892d99,
+        type: 3}
     - target: {fileID: 338965982738840564, guid: c1259e17ea4cb934d8730b17501c19bc,
         type: 3}
       propertyPath: growthSpeed

@@ -12,11 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4397396bfa15ecd49a66211268608fe2, type: 3}
   m_Name: Buildings
   m_EditorClassIdentifier: 
-  listOfBuildingsOver:
+  buildingsOver:
   - {fileID: 6101873281645064127, guid: 47a0da6314eeb3c4eb3812005178c7c0, type: 3}
-  - {fileID: 8131189463676946525, guid: 8b5c2b715bb62634993b5c3112db6f0f, type: 3}
   - {fileID: 1288296769883065742, guid: 12765abef7564804984e74da80c6cb19, type: 3}
-  listOfBuildingsDown:
+  - {fileID: 8131189463676946525, guid: 8b5c2b715bb62634993b5c3112db6f0f, type: 3}
+  buildingsUnder:
   - {fileID: -2359018819170720862, guid: fad32d0104fa3e04d9dc7c33e4e56f49, type: 3}
-  - {fileID: -3505393008635252578, guid: 698969eeb934e924bbf2efcf395f1928, type: 3}
   - {fileID: -6426802559088025019, guid: b28dec7502793de4a9313b85c0f1f2f2, type: 3}
+  - {fileID: -3505393008635252578, guid: 698969eeb934e924bbf2efcf395f1928, type: 3}
+  worldSegmentsOver:
+  - {fileID: 1264079566138153547, guid: 4bdfce2104340c5499b059b1e64ab672, type: 3}
+  - {fileID: 1264079566138153547, guid: ded018ae1370d3d4cb2ded33f43586ec, type: 3}
+  - {fileID: 1264079566138153547, guid: a9f71ed972550b145b8a0605ed653acb, type: 3}
+  worldSegmentsUnder:
+  - {fileID: 3949785113526752729, guid: 1981a0ac63f3d3b4e9264e3d5f851f5e, type: 3}
+  - {fileID: 3949785113526752729, guid: 8e1a3b8f0b7d4da4ebad3335665dddde, type: 3}
+  - {fileID: 3949785113526752729, guid: 991f6f1eaad0f274a93f776584b36387, type: 3}
+  <PreviewShader>k__BackingField: {fileID: -6465566751694194690, guid: f1a431291827ba841993415d14d0716c,
+    type: 3}
+  <PreviewInvalid>k__BackingField: {r: 1, g: 0, b: 0, a: 0.5019608}
+  <PreviewValid>k__BackingField: {r: 0.112679005, g: 1, b: 0, a: 0.5019608}

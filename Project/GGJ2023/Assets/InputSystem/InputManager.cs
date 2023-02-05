@@ -23,7 +23,7 @@ public class InputManager : MonoBehaviour
         knownGamePads = new List<PlayerEventAssignment>();
         for (int i = 0; i < 4; i++)
         {
-            knownGamePads.Add(new PlayerEventAssignment(i + 1));
+            knownGamePads.Add(new PlayerEventAssignment(i));
         }
         UpdateFoundControllers();
     }
@@ -36,7 +36,7 @@ public class InputManager : MonoBehaviour
 
     public Vector2 GetLeftJoystick(int playerId)
     {
-        foreach(var entry in knownGamePads)
+        foreach (var entry in knownGamePads)
         {
             if (entry.PlayerId == playerId)
                 return entry.LeftJoyStick;
@@ -164,7 +164,7 @@ public class InputManager : MonoBehaviour
     {
         foreach (Gamepad gamePad in Gamepad.all)
         {
-            if(knownGamePads.Any(g => g.UsesGamepad(gamePad)))
+            if (knownGamePads.Any(g => g.UsesGamepad(gamePad)))
             {
                 continue;
             }
@@ -189,7 +189,7 @@ public class InputManager : MonoBehaviour
         Action<Vector2> leftStickUpdateEvent, Action<Vector2> rightStickUpdateEvent)
     {
         PlayerEventAssignment entry = knownGamePads.FirstOrDefault(g => g.PlayerId == playerId);
-        if(entry == null)
+        if (entry == null)
         {
             return;
         }
@@ -220,7 +220,7 @@ public class InputManager : MonoBehaviour
             get => enabled;
             set
             {
-                if(value != Enabled)
+                if (value != Enabled)
                 {
                     enabled = value;
                     enabledChanged.Invoke(Enabled);
@@ -277,7 +277,8 @@ public class InputManager : MonoBehaviour
 
         public void AssignAButton(Action onButton)
         {
-            OnButtonA.AddListener(delegate {
+            OnButtonA.AddListener(delegate
+            {
                 try
                 {
                     onButton.Invoke();
@@ -291,7 +292,8 @@ public class InputManager : MonoBehaviour
 
         public void AssignBButton(Action onButton)
         {
-            OnButtonB.AddListener(delegate {
+            OnButtonB.AddListener(delegate
+            {
                 try
                 {
                     onButton.Invoke();
@@ -305,7 +307,8 @@ public class InputManager : MonoBehaviour
 
         public void AssignXButton(Action onButton)
         {
-            OnButtonX.AddListener(delegate {
+            OnButtonX.AddListener(delegate
+            {
                 try
                 {
                     onButton.Invoke();
@@ -319,7 +322,8 @@ public class InputManager : MonoBehaviour
 
         public void AssignYButton(Action onButton)
         {
-            OnButtonY.AddListener(delegate {
+            OnButtonY.AddListener(delegate
+            {
                 try
                 {
                     onButton.Invoke();
@@ -333,7 +337,8 @@ public class InputManager : MonoBehaviour
 
         public void AssignLButton(Action onButton)
         {
-            OnButtonL.AddListener(delegate {
+            OnButtonL.AddListener(delegate
+            {
                 try
                 {
                     onButton.Invoke();
@@ -347,7 +352,8 @@ public class InputManager : MonoBehaviour
 
         public void AssignRButton(Action onButton)
         {
-            OnButtonR.AddListener(delegate {
+            OnButtonR.AddListener(delegate
+            {
                 try
                 {
                     onButton.Invoke();

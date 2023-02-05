@@ -5785,11 +5785,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerID: 1
   minionPrefab: {fileID: 0}
-  buildings: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1, type: 2}
-  spawn: {fileID: 1657666902}
+  rootPrefab: {fileID: 0}
+  <Buildings>k__BackingField: {fileID: 0}
+  <Spawn>k__BackingField: {fileID: 0}
+  <Resources>k__BackingField: 0
   groundOffset: 0
   cameraMoveSpeed: 4
-  cam: {fileID: 685377998}
+  usedCamera: {fileID: 0}
   inputManager: {fileID: 1110837756}
 --- !u!1 &1043448541
 GameObject:
@@ -6152,11 +6154,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerID: 2
   minionPrefab: {fileID: 0}
-  buildings: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1, type: 2}
-  spawn: {fileID: 243977653}
+  rootPrefab: {fileID: 0}
+  <Buildings>k__BackingField: {fileID: 0}
+  <Spawn>k__BackingField: {fileID: 0}
+  <Resources>k__BackingField: 0
   groundOffset: 0
   cameraMoveSpeed: 4
-  cam: {fileID: 998811147}
+  usedCamera: {fileID: 0}
   inputManager: {fileID: 1110837756}
 --- !u!1 &1077275363
 GameObject:

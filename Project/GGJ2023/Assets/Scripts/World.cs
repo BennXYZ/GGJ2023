@@ -121,6 +121,7 @@ public class World : MonoBehaviour
     public void AddBuilding(Building buildingPrefab)
     {
         Building newBuilding = Instantiate(buildingPrefab, Spawn.position, Quaternion.identity, transform);
+        newBuilding.Manager = this;
         Resources -= newBuilding.Price;
         { // Add to buildings
             bool added = false;

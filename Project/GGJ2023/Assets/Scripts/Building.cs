@@ -6,7 +6,7 @@ using System.Linq;
 
 public class Building : MonoBehaviour, IViewTarget
 {
-    public World manager;
+    public World Manager;
 
     [SerializeField]
     string buildingName;
@@ -85,12 +85,12 @@ public class Building : MonoBehaviour, IViewTarget
 
     void Update()
     {
-        if(resourceTicker > 0 && resourcesPerTick > 0)
+        if(resourceTimestamp > 0 && resourceTicker > 0 && resourcesPerTick > 0)
         {
             if(Time.time > resourceTimestamp + resourceTicker)
             {
                 resourceTimestamp = Time.time;
-                manager.GainResource(resourcesPerTick);
+                Manager.GainResource(resourcesPerTick);
             }
         }
     }
@@ -121,10 +121,10 @@ public class Building : MonoBehaviour, IViewTarget
 
     private void SpawnWorker()
     {
-        Minion instance = Instantiate(manager.MinionPrefab, minionSpawnLocation != null ? minionSpawnLocation.position : transform.position, Quaternion.identity);
+        Minion instance = Instantiate(Manager.MinionPrefab, minionSpawnLocation != null ? minionSpawnLocation.position : transform.position, Quaternion.identity);
         spawnedMinions.Add(instance);
         instance.SetHome(this);
-        manager.MinionSpawned(instance);
+        Manager.MinionSpawned(instance);
     }
 
     public void AssignMinion(Minion minion)
@@ -140,10 +140,10 @@ public class Building : MonoBehaviour, IViewTarget
 
     void SpawnRoots()
     {
-        if (manager.RootPrefab != null)
+        if (Manager.RootPrefab != null)
             for (int i = 0; i < rootCount; i++)
             {
-                spawnedRoots.Add(Instantiate(manager.RootPrefab, GetRootPosition(i), manager.RootPrefab.transform.rotation, transform));
+                spawnedRoots.Add(Instantiate(Manager.RootPrefab, GetRootPosition(i), Manager.RootPrefab.transform.rotation, transform));
             }
     }
 
@@ -213,7 +213,7 @@ public class Building : MonoBehaviour, IViewTarget
     {
         if (spawnedRoots[i] == null)
         {
-            spawnedRoots[i] = Instantiate(manager.RootPrefab, GetRootPosition(i), manager.RootPrefab.transform.rotation, transform);
+            spawnedRoots[i] = Instantiate(Manager.RootPrefab, GetRootPosition(i), Manager.RootPrefab.transform.rotation, transform);
         }
     }
 

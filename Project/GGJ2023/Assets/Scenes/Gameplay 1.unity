@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028334, g: 0.2257134, b: 0.30692226, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -645,8 +645,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 1
+  otherWorld: {fileID: 0}
   minionPrefab: {fileID: -4071070740494554601, guid: 3a5f32c573937094385d8057542d2b36,
     type: 3}
+  rootPrefab: {fileID: 1254127960088867505, guid: 120bf896bfb124249a3fc730fe98f010,
+    type: 3}
+  minionsText: {fileID: 0}
+  foodText: {fileID: 0}
+  buildingTitle: {fileID: 0}
+  capacityText: {fileID: 0}
+  aButtonText: {fileID: 0}
+  xButtonText: {fileID: 0}
+  yButton: {fileID: 0}
+  buildingModeBorder: {fileID: 0}
   <Buildings>k__BackingField: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1,
     type: 2}
   <Spawn>k__BackingField: {fileID: 1187636340}
@@ -868,8 +879,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 0
+  otherWorld: {fileID: 0}
   minionPrefab: {fileID: -3909348981925965489, guid: 1e875e737cdef324eab581890b8b9bb6,
     type: 3}
+  rootPrefab: {fileID: 3607167049527686579, guid: 3c48f4a3fb94d554da463b910683bbd1,
+    type: 3}
+  minionsText: {fileID: 0}
+  foodText: {fileID: 0}
+  buildingTitle: {fileID: 0}
+  capacityText: {fileID: 0}
+  aButtonText: {fileID: 0}
+  xButtonText: {fileID: 0}
+  yButton: {fileID: 0}
+  buildingModeBorder: {fileID: 0}
   <Buildings>k__BackingField: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1,
     type: 2}
   <Spawn>k__BackingField: {fileID: 377163484}

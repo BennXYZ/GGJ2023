@@ -75,11 +75,13 @@ internal class WorldPlayMode : WorldMode
 
     public override string GetBuildingTitle()
     {
-        return "Bush";
+        return World.ViewTargets[focussedViewTarget].BuildingName;
     }
 
     public override string GetBuildingCapacity()
     {
-        return "lol";
+        if(World.ViewTargets[focussedViewTarget].IsBuilding)
+            return (World.ViewTargets[focussedViewTarget] as Building).WorkPerformance.ToString();
+        return "";
     }
 }

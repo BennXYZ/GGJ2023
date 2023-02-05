@@ -18,7 +18,10 @@ public class World : MonoBehaviour
     GameObject rootPrefab;
 
     [SerializeField]
-    Text minionsText, foodText, buildingTitle, capacityText, aButtonText, xButtonText, yButton;
+    TMPro.TMP_Text minionsText, foodText, buildingTitle, capacityText, aButtonText, xButtonText, yButton;
+
+    [SerializeField]
+    GameObject buildingModeBorder;
 
     public Minion MinionPrefab => minionPrefab;
     public GameObject RootPrefab => rootPrefab;
@@ -147,6 +150,8 @@ public class World : MonoBehaviour
 
     private void UpdateUI()
     {
+        if (minionsText == null)
+            return;
         minionsText.text = CurrentlyAvailableMinions + "/" + CurrentMaxUnits;
         foodText.text = Resources.ToString();
         buildingTitle.text = currentWorldMode.GetBuildingTitle();
@@ -263,6 +268,8 @@ public class World : MonoBehaviour
             SetActiveWorldMode(playMode);
         else
             SetActiveWorldMode(buildMode);
+        if(buildingModeBorder != null)
+            buildingModeBorder.SetActive(buildMode.Active);
     }
 
     private void SetActiveWorldMode(WorldMode worldMode)

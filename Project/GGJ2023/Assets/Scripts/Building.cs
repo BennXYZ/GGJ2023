@@ -21,8 +21,6 @@ public class Building : MonoBehaviour
     [SerializeField]
     int productionWorker;
     [SerializeField]
-    float friendzone;
-    [SerializeField]
     float width = 3;
 
     [Space]
@@ -31,7 +29,7 @@ public class Building : MonoBehaviour
 
     List<Material> previewMaterials = new List<Material>();
 
-    public float Width => width;
+    public float Width => width / 2;
 
     bool isEnabled;
 

@@ -62,6 +62,7 @@ public class WorldGameManager : MonoBehaviour
     InputManager inputManager;
 
     List<Building> existingBuildings = new();
+    public IReadOnlyList<Building> ExistingBuildings => existingBuildings;
     List<Minion> existingUnits = new();
 
     private WorldGenerator worldGenerator;
@@ -116,7 +117,7 @@ public class WorldGameManager : MonoBehaviour
         worldGenerator.RefreshGround(usedCamera.transform.position.x, playerID);
     }
 
-    void DespawnUnits(int number)
+    public void DespawnUnits(int number)
     {
         int currentlyRemoved = 0;
         for (int i = 0; i < existingUnits.Count; i++)

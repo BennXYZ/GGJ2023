@@ -24,7 +24,6 @@ internal class WorldPlayMode : WorldMode
 
     public override void Startup()
     {
-
     }
 
     public override void Update()

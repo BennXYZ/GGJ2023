@@ -86,7 +86,17 @@ internal class WorldBuildMode : WorldMode
         camera.transform.position = new Vector3(Mathf.Clamp(camera.transform.position.x, -9, 9), camera.transform.position.y, camera.transform.position.z);
 
         SetBuildBlocker(BuildBlocker.Price, World.Resources < previewBuilding.Price);
-        SetBuildBlocker(BuildBlocker.Location, false); // TODO(ms): Calculate proper location here
+        bool blocked = false;
+        foreach (Building building in World.ExistingBuildings)
+        {
+            float distance = Mathf.Abs(building.transform.position.x - previewBuilding.transform.position.x);
+            if (distance < building.Width + previewBuilding.Width)
+            {
+                blocked = true;
+                break;
+            }
+        }
+        SetBuildBlocker(BuildBlocker.Location, blocked); // TODO(ms): Calculate proper location here
     }
 
     private void SetBuildBlocker(BuildBlocker blocker, bool set)

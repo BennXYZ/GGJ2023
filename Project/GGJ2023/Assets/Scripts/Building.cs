@@ -41,6 +41,7 @@ public class Building : MonoBehaviour, IViewTarget
 
     List<Minion> assignedMinions = new List<Minion>();
     List<Minion> spawnedMinions = new List<Minion>();
+    List<GameObject> spawnedRoots = new List<GameObject>();
 
     public float Width => width / 2;
 
@@ -66,6 +67,7 @@ public class Building : MonoBehaviour, IViewTarget
         consumptionTimer = consumputionDuration;
         if (workers > 0)
             StartSpawningWorkers();
+        SpawnRoots();
     }
 
     void Update()
@@ -129,6 +131,14 @@ public class Building : MonoBehaviour, IViewTarget
         return MinionStates.Idle;
     }
 
+    void SpawnRoots()
+    {
+        if (manager.RootPrefab != null)
+            for (int i = 0; i < rootCount; i++)
+            {
+                spawnedRoots.Add(Instantiate(manager.RootPrefab, GetRootPosition(i), manager.RootPrefab.transform.rotation, transform));
+            }
+    }
 
     public void UsePreviewMaterial(Shader shader, Color tintColor)
     {

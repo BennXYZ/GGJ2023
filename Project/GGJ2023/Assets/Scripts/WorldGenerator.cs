@@ -11,9 +11,11 @@ public class WorldGenerator : MonoBehaviour
     public void RefreshGround(float cameraPosition, PlayerType playerID)
     {
         int possibleSpawnLocations = (int)cameraPosition / 5 + Math.Sign(cameraPosition);
+        float reducedCamera = cameraPosition / 5 - 4;
         for (int i = 0; i < 9; i++)
         {
-            CreateRandomGround(possibleSpawnLocations + i - 5, playerID);
+            float floatOffset = reducedCamera + i;
+            CreateRandomGround(Mathf.FloorToInt(floatOffset), playerID);
         }
     }
 

@@ -45,7 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff735e2781263284ea5b489a3739ec5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingName: 
   width: 2
+  foodPrefab: {fileID: 0}
 --- !u!1001 &4228444470858030959
 PrefabInstance:
   m_ObjectHideFlags: 0

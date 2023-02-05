@@ -17,7 +17,7 @@ internal class WorldBuildMode : WorldMode
 
     public bool IsBlocked => blockers.Count > 0;
 
-    public WorldBuildMode(WorldGameManager worldGameManager) : base(worldGameManager)
+    public WorldBuildMode(World worldGameManager) : base(worldGameManager)
     {
         buildings = World.Buildings.GetBuildings(World.PlayerID);
         selectedBuilding = 0;

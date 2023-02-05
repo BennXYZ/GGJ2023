@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
-    public WorldGameManager manager;
+    public World manager;
 
 
     [field: SerializeField]
@@ -14,6 +14,8 @@ public class Building : MonoBehaviour
     [SerializeField]
     int workers;
     [SerializeField]
+    float workerSpawnDelay;
+    [SerializeField]
     float workPerformance;
     [Space]
     [SerializeField]
@@ -21,7 +23,15 @@ public class Building : MonoBehaviour
     [SerializeField]
     int productionWorker;
     [SerializeField]
+    int maxNumberAssignedMinions;
+    [SerializeField]
     float width = 3;
+    [SerializeField]
+    float rootWidth = 3;
+    [SerializeField]
+    int rootCount = 4;
+    [SerializeField]
+    float rootHeightDisplacement = 3;
 
     [Space]
     [SerializeField]
@@ -29,11 +39,17 @@ public class Building : MonoBehaviour
 
     List<Material> previewMaterials = new List<Material>();
 
+    List<Minion> assignedMinions = new List<Minion>();
+    List<Minion> spawnedMinions = new List<Minion>();
+
     public float Width => width / 2;
 
     bool isEnabled;
 
     float WorkPerformance => workPerformance;
+    public int MaxNumberAssignedMinions => maxNumberAssignedMinions;
+
+    public bool CanAssignMinions => assignedMinions.Count < MaxNumberAssignedMinions;
 
     [SerializeField]
     float startTimer = 0f;
@@ -63,7 +79,7 @@ public class Building : MonoBehaviour
         int numberSpawned = 0;
         while(numberSpawned < workers)
         {
-            yield return new WaitForSeconds(timer);
+            yield return new WaitForSeconds(workerSpawnDelay);
             SpawnWorker();
             numberSpawned++;
         }
@@ -72,6 +88,9 @@ public class Building : MonoBehaviour
     private void SpawnWorker()
     {
         Minion instance = Instantiate(manager.MinionPrefab, minionSpawnLocation != null ? minionSpawnLocation.position : transform.position, Quaternion.identity);
+        spawnedMinions.Add(instance);
+        instance.SetHome(this);
+        manager.MinionSpawned(instance);
     }
 
     public int Tick(float deltaTime)
@@ -93,6 +112,12 @@ public class Building : MonoBehaviour
         }
         return 0;
         //        return cost/3600 * deltaTime;
+    }
+
+    public void AssignMinion(Minion minion)
+    {
+        assignedMinions.Add(minion);
+        minion.AssignBuilding(this);
     }
 
     public virtual MinionStates Interact(Minion minion)
@@ -128,5 +153,23 @@ public class Building : MonoBehaviour
                 previewMaterial.SetColor("TintColor", tintColor);
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        for (int i = 0; i < rootCount; i++)
+        {
+            Gizmos.DrawSphere(GetRootPosition(i), 0.2f);
+        }
+    }
+
+    Vector3 GetRootPosition(int index)
+    {
+        if(index < 0 || index > rootCount)
+        {
+            return Vector3.zero;
+        }
+        return transform.position + Vector3.up * rootHeightDisplacement + (-Vector3.right * rootWidth / 2) + Vector3.right * index * rootWidth / (rootCount - 1);
     }
 }

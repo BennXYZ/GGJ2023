@@ -34,8 +34,10 @@ public class World : MonoBehaviour
     [field: SerializeField]
     public Transform Spawn { get; private set; }
 
-    [field: SerializeField]
-    public int Resources { get; private set; }
+    [SerializeField]
+    private float resources = 1000;
+
+    public int Resources => Mathf.FloorToInt(resources);
 
     [SerializeField]
     private float groundOffset;
@@ -62,7 +64,10 @@ public class World : MonoBehaviour
     public IReadOnlyList<IViewTarget> ViewTargets => viewTargets;
 
     List<Minion> existingUnits = new();
-    int currentFoodCost;
+
+    [SerializeField]
+    float currentFoodCost = 240;
+
     int CurrentlyAvailableMinions
     {
         get => existingUnits.Count(u => u.TargetPrio() == 0);
@@ -110,19 +115,14 @@ public class World : MonoBehaviour
 
     public void GainResource(int amount)
     {
-        Resources += amount;
-    }
-
-    public void EatResource()
-    {
-        Resources--;
+        resources += amount;
     }
 
     public void AddBuilding(Building buildingPrefab)
     {
         Building newBuilding = Instantiate(buildingPrefab, Spawn.position, Quaternion.identity, transform);
         newBuilding.Manager = this;
-        Resources -= newBuilding.Price;
+        resources -= newBuilding.Price;
         { // Add to buildings
             bool added = false;
             for (int i = 0; i < existingBuildings.Count; i++)
@@ -158,6 +158,12 @@ public class World : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Increases hunger
+        currentFoodCost += Time.deltaTime;
+
+        // Eats resources
+        resources -= Time.deltaTime / 60 * currentFoodCost;
+
         currentWorldMode?.Update();
 
         foodPoint.SetFoodCount(Resources / 100);

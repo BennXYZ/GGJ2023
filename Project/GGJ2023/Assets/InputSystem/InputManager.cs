@@ -9,6 +9,16 @@ using UnityEngine.InputSystem.Controls;
 
 public class InputManager : MonoBehaviour
 {
+    public const string A_KEY = "A";
+    public const string B_KEY = "B";
+    public const string X_KEY = "X";
+    public const string Y_KEY = "Y";
+    public const string L_KEY = "L";
+    public const string R_KEY = "R";
+    public const string UP_KEY = "UP";
+    public const string DOWN_KEY = "DOWN";
+    public const string LEFT_KEY = "LEFT";
+    public const string RIGHT_KEY = "RIGHT";
     List<PlayerEventAssignment> knownGamePads;
 
     public static InputManager Instance;
@@ -62,23 +72,35 @@ public class InputManager : MonoBehaviour
             {
                 switch (button)
                 {
-                    case "A":
+                    case A_KEY:
                         entry.AssignAButton(onButton);
                         break;
-                    case "B":
+                    case B_KEY:
                         entry.AssignBButton(onButton);
                         break;
-                    case "X":
+                    case X_KEY:
                         entry.AssignXButton(onButton);
                         break;
-                    case "Y":
+                    case Y_KEY:
                         entry.AssignYButton(onButton);
                         break;
-                    case "L":
+                    case L_KEY:
                         entry.AssignLButton(onButton);
                         break;
-                    case "R":
+                    case R_KEY:
                         entry.AssignRButton(onButton);
+                        break;
+                    case UP_KEY:
+                        entry.AssignUpButton(onButton);
+                        break;
+                    case DOWN_KEY:
+                        entry.AssignDownButton(onButton);
+                        break;
+                    case RIGHT_KEY:
+                        entry.AssignRightButton(onButton);
+                        break;
+                    case LEFT_KEY:
+                        entry.AssignLeftButton(onButton);
                         break;
                 }
             }
@@ -93,18 +115,26 @@ public class InputManager : MonoBehaviour
             {
                 switch (button)
                 {
-                    case "A":
+                    case A_KEY:
                         return entry.GamePad.aButton.isPressed;
-                    case "B":
+                    case B_KEY:
                         return entry.GamePad.bButton.isPressed;
-                    case "X":
+                    case X_KEY:
                         return entry.GamePad.xButton.isPressed;
-                    case "Y":
+                    case Y_KEY:
                         return entry.GamePad.yButton.isPressed;
-                    case "L":
+                    case L_KEY:
                         return entry.GamePad.leftShoulder.isPressed;
-                    case "R":
+                    case R_KEY:
                         return entry.GamePad.rightShoulder.isPressed;
+                    case UP_KEY:
+                        return entry.GamePad.dpad.up.isPressed;
+                    case DOWN_KEY:
+                        return entry.GamePad.dpad.down.isPressed;
+                    case LEFT_KEY:
+                        return entry.GamePad.dpad.left.isPressed;
+                    case RIGHT_KEY:
+                        return entry.GamePad.dpad.right.isPressed;
                 }
             }
         }
@@ -208,6 +238,10 @@ public class InputManager : MonoBehaviour
         readonly UnityEvent OnButtonR = new UnityEvent();
         readonly UnityEvent<Vector2> OnLeftStickUpdate = new UnityEvent<Vector2>();
         readonly UnityEvent<Vector2> OnRightStickUpdate = new UnityEvent<Vector2>();
+        readonly UnityEvent OnButtonUp = new UnityEvent();
+        readonly UnityEvent OnButtonRight = new UnityEvent();
+        readonly UnityEvent OnButtonLeft = new UnityEvent();
+        readonly UnityEvent OnButtonDown = new UnityEvent();
 
         public Vector2 LeftJoyStick { get; private set; }
         public Vector2 RightJoyStick { get; private set; }
@@ -351,6 +385,66 @@ public class InputManager : MonoBehaviour
         public void AssignRButton(Action onButton)
         {
             OnButtonR.AddListener(delegate
+            {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
+        }
+
+        public void AssignUpButton(Action onButton)
+        {
+            OnButtonUp.AddListener(delegate
+            {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
+        }
+
+        public void AssignDownButton(Action onButton)
+        {
+            OnButtonDown.AddListener(delegate
+            {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
+        }
+
+        public void AssignRightButton(Action onButton)
+        {
+            OnButtonRight.AddListener(delegate
+            {
+                try
+                {
+                    onButton.Invoke();
+                }
+                catch
+                {
+
+                }
+            });
+        }
+
+        public void AssignLeftButton(Action onButton)
+        {
+            OnButtonLeft.AddListener(delegate
             {
                 try
                 {

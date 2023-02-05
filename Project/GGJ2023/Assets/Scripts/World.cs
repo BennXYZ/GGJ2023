@@ -74,7 +74,7 @@ public class World : MonoBehaviour
 
         worldGenerator = gameObject.AddComponent<WorldGenerator>();
         worldGenerator.Initialize(Buildings, groundOffset);
-        worldGenerator.RefreshGround(usedCamera.transform.position.x, playerID);
+        worldGenerator.RefreshGround(usedCamera.transform.localPosition.x, playerID);
 
         SetActiveWorldMode(playMode);
     }
@@ -102,7 +102,7 @@ public class World : MonoBehaviour
 
     private void LateUpdate()
     {
-        worldGenerator.RefreshGround(usedCamera.transform.position.x, playerID);
+        worldGenerator.RefreshGround(usedCamera.transform.localPosition.x, playerID);
     }
 
     /// <summary>

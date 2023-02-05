@@ -535,7 +535,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 1
-  minionPrefab: {fileID: 0}
+  minionPrefab: {fileID: -4071070740494554601, guid: 3a5f32c573937094385d8057542d2b36,
+    type: 3}
   <Buildings>k__BackingField: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1,
     type: 2}
   <Spawn>k__BackingField: {fileID: 1187636340}
@@ -755,7 +756,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerID: 0
-  minionPrefab: {fileID: 0}
+  minionPrefab: {fileID: -3909348981925965489, guid: 1e875e737cdef324eab581890b8b9bb6,
+    type: 3}
   <Buildings>k__BackingField: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1,
     type: 2}
   <Spawn>k__BackingField: {fileID: 377163484}

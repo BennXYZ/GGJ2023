@@ -23,6 +23,12 @@ public class Building : MonoBehaviour
     float friendzone;
     [SerializeField]
     float width = 3;
+    [SerializeField]
+    float rootWidth = 3;
+    [SerializeField]
+    int rootCount = 4;
+    [SerializeField]
+    float rootHeightDisplacement = 3;
 
     [Space]
     [SerializeField]
@@ -129,5 +135,23 @@ public class Building : MonoBehaviour
                 previewMaterial.SetColor("TintColor", tintColor);
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        for (int i = 0; i < rootCount; i++)
+        {
+            Gizmos.DrawSphere(GetRootPosition(i), 0.2f);
+        }
+    }
+
+    Vector3 GetRootPosition(int index)
+    {
+        if(index < 0 || index > rootCount)
+        {
+            return Vector3.zero;
+        }
+        return transform.position + Vector3.up * rootHeightDisplacement + (-Vector3.right * rootWidth / 2) + Vector3.right * index * rootWidth / (rootCount - 1);
     }
 }

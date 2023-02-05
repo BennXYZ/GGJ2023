@@ -3,89 +3,117 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerType
+{
+    Over,
+    Under
+}
+
+public abstract class WorldMode
+{
+    public WorldGameManager World { get; private set; }
+
+    protected WorldMode(WorldGameManager worldGameManager)
+    {
+        World = worldGameManager;
+    }
+
+    public bool Active { get; set; }
+
+    public abstract void Shutdown();
+
+    public abstract void Update();
+
+    public abstract void Startup();
+}
+
 public class WorldGameManager : MonoBehaviour
 {
-    enum GameState { Game, Build, Pause }
-
-    public enum PlayerType { Over, Under }
-
     [SerializeField]
     PlayerType playerID;
+    public PlayerType PlayerID => playerID;
+
     [SerializeField]
     Minion minionPrefab;
 
     public Minion MinionPrefab => minionPrefab;
 
-    [SerializeField]
-    BuildingContainer buildings;
-    [SerializeField]
-    GameObject spawn;
+    [field: SerializeField]
+    public BuildingContainer Buildings { get; private set; }
+    [field:SerializeField]
+    public Transform Spawn { get; private set; }
+
+    [field: SerializeField]
+    public int Resources { get; private set; }
 
     [SerializeField]
     private float groundOffset;
 
     [Space]
-
     [SerializeField]
     float cameraMoveSpeed = 4.0f;
+    public float CameraMoveSpeed => cameraMoveSpeed;
     [SerializeField]
-    Camera cam;
-    [Space]
+    Camera usedCamera;
+    public Camera UsedCamera => usedCamera;
 
+    [Space]
     [SerializeField]
     InputManager inputManager;
 
-    Building newBuilding;
-    List<Building> listOfBuildings = new();
-    int currentFoodCost;
-    int maxNumberOfUnits;
+    List<Building> existingBuildings = new();
     List<Minion> existingUnits = new();
-    GameState gameState;
-    Vector3 cameraMovement;
 
-    HashSet<int> existingWorldSegments = new();
+    private WorldGenerator worldGenerator;
+
+    WorldBuildMode buildMode;
+    WorldPlayMode playMode;
+
+    WorldMode currentWorldMode;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Assert(buildings, "No buildings object assigned");
-        gameState = GameState.Game;
+        buildMode = new WorldBuildMode(this);
+        playMode = new WorldPlayMode(this);
+
+        Debug.Assert(Buildings, "No buildings object assigned");
         inputManager.AssignButton("X", (int)playerID, ToggleMode);
+        inputManager.AssignButton("L", (int)playerID, buildMode.PreviousBuilding);
+        inputManager.AssignButton("R", (int)playerID, buildMode.NextBuilding);
+        inputManager.AssignButton("A", (int)playerID, buildMode.Build);
+
+        worldGenerator = gameObject.AddComponent<WorldGenerator>();
+        worldGenerator.Initialize(Buildings, groundOffset);
+        worldGenerator.RefreshGround(usedCamera.transform.position.x, playerID);
+
+        SetActiveWorldMode(playMode);
     }
 
-    private void CreateRandomGround(int offset)
+    public void AddBuilding(Building buildingPrefab)
     {
-        if (!existingWorldSegments.Contains(offset))
+        Building newBuilding = Instantiate(buildingPrefab, Spawn.position, Quaternion.identity, transform);
+        Resources -= newBuilding.Price;
+        for (int i = 0; i < existingBuildings.Count; i++)
         {
-            IReadOnlyList<Transform> worldSegments = buildings.GetWorldSegments(playerID);
-            Transform prefab = worldSegments[UnityEngine.Random.Range(0, worldSegments.Count - 1)];
-            Instantiate(prefab, transform.position + new Vector3(offset * 5, groundOffset, 0), Quaternion.identity, transform);
-
-            existingWorldSegments.Add(offset);
+            if (existingBuildings[i].transform.position.x < newBuilding.transform.position.x)
+            {
+                existingBuildings.Insert(i, newBuilding);
+                return;
+            }
         }
+        existingBuildings.Add(newBuilding);
     }
 
     // Update is called once per frame
     void Update()
     {
-        int possibleSpawnLocations = (int)(cam.transform.position.x) / 5 + Math.Sign(cam.transform.position.x);
+        currentWorldMode?.Update();
+    }
 
-        for (int i = 0; i < 9; i++)
-        {
-            CreateRandomGround(possibleSpawnLocations + i - 5);
-        }
-
-        if (gameState == GameState.Game)
-        {
-            inputManager.GetLeftJoystick((int)playerID);
-            cameraMovement = new Vector3(InputManager.Instance.GetRightJoystick((int)playerID).x, 0f);
-            cam.transform.Translate(cameraMovement * cameraMoveSpeed * Time.deltaTime);
-            cam.transform.position = new Vector3(Mathf.Clamp(cam.transform.position.x, -9, 9), cam.transform.position.y, cam.transform.position.z);
-
-            inputManager.AssignButton("A", (int)playerID, SetBuildingPosition);
-
-        }
-
+    private void LateUpdate()
+    {
+        worldGenerator.RefreshGround(usedCamera.transform.position.x, playerID);
     }
 
     void DespawnUnits(int number)
@@ -131,49 +159,35 @@ public class WorldGameManager : MonoBehaviour
 
     }
 
-    void ToggleMode()
+    private void ToggleMode()
     {
-        if (gameState == GameState.Game)
-        {
-            gameState = GameState.Build;
-            InitializeBuildMode();
-        }
+        if (buildMode.Active)
+            SetActiveWorldMode(playMode);
         else
+            SetActiveWorldMode(buildMode);
+    }
+
+    private void SetActiveWorldMode(WorldMode worldMode)
+    {
+        if (currentWorldMode != null)
         {
-            gameState = GameState.Game;
+            currentWorldMode.Shutdown();
+            currentWorldMode.Active = false;
         }
-    }
-
-    void InitializeBuildMode()
-    {
-        int buildingIndex = 0;
-
-        Debug.Log("Buildmod");
-        // enable UI elements
-        // show current build object on the center of the field of view
-        Vector3 spawnPosition = spawn.transform.position;
-
-        IReadOnlyList<Building> buildingSelection = buildings.GetBuildings(playerID);
-        Debug.Assert(buildingSelection != null, "Player id is invalid");
-        newBuilding = Instantiate(buildingSelection[buildingIndex], spawnPosition, Quaternion.Euler(0, 180, 0));
-        newBuilding.transform.parent = spawn.transform;
-        newBuilding.UsePreviewMaterial(buildings.PreviewShader, buildings.PreviewInvalid);
-
-        Debug.Log("camera");
-    }
-
-    void SetBuildingPosition()
-    {
-
+        currentWorldMode = worldMode;
+        if (currentWorldMode != null)
+        {
+            currentWorldMode.Active = true;
+            currentWorldMode.Startup();
+        }
     }
 
     void UpdateCosts()
     {
         int result = 0;
-        foreach (var build in listOfBuildings)
+        foreach (Building building in existingBuildings)
         {
-            result += build.Tick(Time.deltaTime);
-
+            result += building.Tick(Time.deltaTime);
         }
     }
 }

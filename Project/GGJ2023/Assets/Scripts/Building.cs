@@ -7,8 +7,9 @@ public class Building : MonoBehaviour
 {
     public WorldGameManager manager;
 
-    [SerializeField]
-    int cost;
+
+    [field: SerializeField]
+    public int Price { get; private set; }
     [Space]
     [SerializeField]
     int workers;

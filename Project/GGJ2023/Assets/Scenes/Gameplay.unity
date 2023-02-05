@@ -524,7 +524,7 @@ MonoBehaviour:
   spawn: {fileID: 1187636339}
   groundOffset: -2
   cameraMoveSpeed: 4
-  cam: {fileID: 1518785777}
+  usedCamera: {fileID: 1518785777}
   inputManager: {fileID: 1478113276}
 --- !u!4 &1243106075
 Transform:
@@ -551,7 +551,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1478113278}
-  - component: {fileID: 1478113277}
   - component: {fileID: 1478113276}
   m_Layer: 0
   m_Name: GameManager
@@ -572,20 +571,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee72a8c331eb4d647b4bb80fd98b055f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1478113277
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1478113275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 220d135fc7df1654db766a38ab6a999c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameraUp: {fileID: 521702200}
-  cameraDown: {fileID: 1518785777}
 --- !u!4 &1478113278
 Transform:
   m_ObjectHideFlags: 0
@@ -773,7 +758,7 @@ MonoBehaviour:
   spawn: {fileID: 377163483}
   groundOffset: -0.5
   cameraMoveSpeed: 4
-  cam: {fileID: 521702200}
+  usedCamera: {fileID: 521702200}
   inputManager: {fileID: 1478113276}
 --- !u!4 &1935007995
 Transform:

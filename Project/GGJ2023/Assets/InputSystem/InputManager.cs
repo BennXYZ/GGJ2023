@@ -200,12 +200,12 @@ public class InputManager : MonoBehaviour
         public Gamepad GamePad { get; private set; }
         UnityEvent<bool> enabledChanged = new UnityEvent<bool>();
 
-        readonly UnityEvent<bool> OnButtonA = new UnityEvent<bool>();
-        readonly UnityEvent<bool> OnButtonB = new UnityEvent<bool>();
-        readonly UnityEvent<bool> OnButtonX = new UnityEvent<bool>();
-        readonly UnityEvent<bool> OnButtonY = new UnityEvent<bool>();
-        readonly UnityEvent<bool> OnButtonL = new UnityEvent<bool>();
-        readonly UnityEvent<bool> OnButtonR = new UnityEvent<bool>();
+        readonly UnityEvent OnButtonA = new UnityEvent();
+        readonly UnityEvent OnButtonB = new UnityEvent();
+        readonly UnityEvent OnButtonX = new UnityEvent();
+        readonly UnityEvent OnButtonY = new UnityEvent();
+        readonly UnityEvent OnButtonL = new UnityEvent();
+        readonly UnityEvent OnButtonR = new UnityEvent();
         readonly UnityEvent<Vector2> OnLeftStickUpdate = new UnityEvent<Vector2>();
         readonly UnityEvent<Vector2> OnRightStickUpdate = new UnityEvent<Vector2>();
 
@@ -252,12 +252,10 @@ public class InputManager : MonoBehaviour
             }
         }
 
-        void HandleButton(ButtonControl button, UnityEvent<bool> buttonEvent)
+        void HandleButton(ButtonControl button, UnityEvent buttonEvent)
         {
             if (button.wasPressedThisFrame)
-                buttonEvent.Invoke(true);
-            if (button.wasReleasedThisFrame)
-                buttonEvent.Invoke(false);
+                buttonEvent.Invoke();
         }
 
         public bool UsesGamepad(Gamepad gamePad)

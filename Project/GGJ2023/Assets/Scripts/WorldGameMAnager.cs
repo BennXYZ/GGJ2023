@@ -7,8 +7,10 @@ public class WorldGameManager : MonoBehaviour
 {
     enum GameState { Game, Build, Pause }
 
+    public enum PlayerType { Over, Under }
+
     [SerializeField]
-    int playerID;
+    PlayerType playerID;
     [SerializeField]
     Minion minionPrefab;
 
@@ -18,13 +20,6 @@ public class WorldGameManager : MonoBehaviour
     BuildingContainer buildings;
     [SerializeField]
     GameObject spawn;
-    [SerializeField]
-    Shader previewShader;
-    [SerializeField]
-    Color previewInvalid;
-    [SerializeField]
-    Color previewValid;
-
     [Space]
 
     [SerializeField]
@@ -47,8 +42,9 @@ public class WorldGameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Assert(buildings, "No buildings object assigned");
         gameState = GameState.Game;
-        inputManager.AssignButton("X", playerID, ToggleMode);
+        inputManager.AssignButton("X", (int)playerID, ToggleMode);
     }
 
     // Update is called once per frame
@@ -56,12 +52,12 @@ public class WorldGameManager : MonoBehaviour
     {
         if (gameState == GameState.Game)
         {
-            inputManager.GetLeftJoystick(playerID);
-            cameraMovement = new Vector3(InputManager.Instance.GetRightJoystick(playerID).x, 0f);
+            inputManager.GetLeftJoystick((int)playerID);
+            cameraMovement = new Vector3(InputManager.Instance.GetRightJoystick((int)playerID).x, 0f);
             cam.transform.Translate(cameraMovement * cameraMoveSpeed * Time.deltaTime);
             cam.transform.position = new Vector3(Mathf.Clamp(cam.transform.position.x, -9, 9), cam.transform.position.y, cam.transform.position.z);
 
-            inputManager.AssignButton("A", playerID, SetBuildingPosition);
+            inputManager.AssignButton("A", (int)playerID, SetBuildingPosition);
 
         }
 
@@ -132,11 +128,11 @@ public class WorldGameManager : MonoBehaviour
         // show current build object on the center of the field of view
         Vector3 spawnPosition = spawn.transform.position;
 
-        IReadOnlyList<Building> buildingSelection = buildings.GetBuildingsByPlayerId(playerID);
+        IReadOnlyList<Building> buildingSelection = buildings.GetBuildings(playerID);
         Debug.Assert(buildingSelection != null, "Player id is invalid");
         newBuilding = Instantiate(buildingSelection[buildingIndex], spawnPosition, Quaternion.Euler(0, 180, 0));
         newBuilding.transform.parent = spawn.transform;
-        newBuilding.UsePreviewMaterial(previewShader, previewValid);
+        newBuilding.UsePreviewMaterial(buildings.PreviewShader, buildings.PreviewInvalid);
 
         Debug.Log("camera");
     }

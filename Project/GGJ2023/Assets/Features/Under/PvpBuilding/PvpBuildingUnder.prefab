@@ -4874,7 +4874,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4125c21d35de34aa1c54a429966115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 0}
+  Manager: {fileID: 0}
   buildingName: Smoker
   <Price>k__BackingField: 20
   workers: 0
@@ -4885,7 +4885,7 @@ MonoBehaviour:
   resourceTicker: 15
   resourcesPerTick: -1
   maxNumberAssignedMinions: 0
-  width: 3
+  width: 1
   rootWidth: 2
   rootCount: 2
   rootHeightDisplacement: 10.9

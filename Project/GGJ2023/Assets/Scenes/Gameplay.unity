@@ -978,12 +978,13 @@ MonoBehaviour:
   <Buildings>k__BackingField: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1,
     type: 2}
   <Spawn>k__BackingField: {fileID: 1187636340}
-  <Resources>k__BackingField: 1000
+  resources: 1000
   groundOffset: -2
   cameraMoveSpeed: 4
   usedCamera: {fileID: 1518785777}
   foodPoint: {fileID: 261247552}
   inputManager: {fileID: 1478113276}
+  currentFoodCost: 0
   additionalBuildArea: 7
 --- !u!1001 &1434271792
 PrefabInstance:
@@ -2131,12 +2132,13 @@ MonoBehaviour:
   <Buildings>k__BackingField: {fileID: 11400000, guid: 986994516f66ad3459215350e89c76b1,
     type: 2}
   <Spawn>k__BackingField: {fileID: 377163484}
-  <Resources>k__BackingField: 1000
+  resources: 1000
   groundOffset: -0.5
   cameraMoveSpeed: 4
   usedCamera: {fileID: 521702200}
   foodPoint: {fileID: 229261146}
   inputManager: {fileID: 1478113276}
+  currentFoodCost: 0
   additionalBuildArea: 7
 --- !u!4 &1935007995
 Transform:
@@ -2285,12 +2287,17 @@ PrefabInstance:
         type: 3}
       propertyPath: foodPrefab
       value: 
-      objectReference: {fileID: 9183010385725486424, guid: 364d8753b9364e4418d0f7f92f892d99,
+      objectReference: {fileID: 5301371928999849417, guid: 71f41594d4631324bb238e1ac5729a92,
         type: 3}
     - target: {fileID: 338965982738840564, guid: c1259e17ea4cb934d8730b17501c19bc,
         type: 3}
       propertyPath: growthSpeed
       value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 338965982738840564, guid: c1259e17ea4cb934d8730b17501c19bc,
+        type: 3}
+      propertyPath: buildingName
+      value: Steve
       objectReference: {fileID: 0}
     - target: {fileID: 338965982738840565, guid: c1259e17ea4cb934d8730b17501c19bc,
         type: 3}

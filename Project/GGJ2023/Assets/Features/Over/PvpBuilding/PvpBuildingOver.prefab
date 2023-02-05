@@ -31,7 +31,7 @@ Transform:
   m_Children:
   - {fileID: 4774946626012565991}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8131189463676946525
 MonoBehaviour:
@@ -46,15 +46,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  <Price>k__BackingField: 0
+  buildingName: Flower
+  <Price>k__BackingField: 20
   workers: 0
-  workPerformance: 0
+  workerSpawnDelay: 0
+  usesMinions: 1
   timer: 0
   productionWorker: 0
-  safeZone: 0.5
+  resourceTicker: 15
+  resourcesPerTick: -1
+  maxNumberAssignedMinions: 0
   width: 1
+  rootWidth: 2
+  rootCount: 2
+  rootHeightDisplacement: -7.92
   minionSpawnLocation: {fileID: 0}
-  startTimer: 0
 --- !u!1001 &5030166556987930124
 PrefabInstance:
   m_ObjectHideFlags: 0

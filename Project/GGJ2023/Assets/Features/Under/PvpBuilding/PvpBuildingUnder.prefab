@@ -4860,7 +4860,7 @@ Transform:
   - {fileID: 549844286977032469}
   - {fileID: 1108380819550882217}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &-3505393008635252578
 MonoBehaviour:
@@ -4875,15 +4875,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  cost: 0
+  buildingName: Smoker
+  <Price>k__BackingField: 20
   workers: 0
-  workPerformance: 0
+  workerSpawnDelay: 0
+  usesMinions: 1
   timer: 0
   productionWorker: 0
-  friendzone: 0
+  resourceTicker: 15
+  resourcesPerTick: -1
+  maxNumberAssignedMinions: 0
   width: 3
+  rootWidth: 2
+  rootCount: 2
+  rootHeightDisplacement: 10.9
   minionSpawnLocation: {fileID: 0}
-  startTimer: 0
 --- !u!1001 &12324469887870718
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -45,14 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f4125c21d35de34aa1c54a429966115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
-  cost: 0
+  manager: {fileID: 0}
+  <Price>k__BackingField: 0
   workers: 0
   workPerformance: 0
   timer: 0
   productionWorker: 0
-  friendzone: 0
-  width: 0
+  safeZone: 0.5
+  width: 1
+  minionSpawnLocation: {fileID: 0}
   startTimer: 0
 --- !u!1001 &5030166556987930124
 PrefabInstance:

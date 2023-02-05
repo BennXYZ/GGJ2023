@@ -51,8 +51,8 @@ MonoBehaviour:
   workPerformance: 0
   timer: 0
   productionWorker: 0
-  friendzone: 0
-  width: 0
+  safeZone: 0.5
+  width: 3
   minionSpawnLocation: {fileID: 0}
   startTimer: 0
 --- !u!1001 &9197797227999350862

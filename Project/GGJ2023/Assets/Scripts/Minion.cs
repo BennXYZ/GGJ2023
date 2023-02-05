@@ -121,7 +121,7 @@ public class Minion : MonoBehaviour
     private void EnterMoving()
     {
         currentTargetBuilding = GetTargetBuilding();
-        targetPosition = currentTargetBuilding.transform.position.x + UnityEngine.Random.Range(-currentTargetBuilding.Width * 0.5f, currentTargetBuilding.Width * 0.5f);
+        targetPosition = currentTargetBuilding.transform.position.x + UnityEngine.Random.Range(-currentTargetBuilding.Width, currentTargetBuilding.Width);
 
         if (Mathf.Abs(transform.position.x - targetPosition) < minMovementDistance)
         {

@@ -3,7 +3,7 @@ using UnityEngine;
 
 internal class WorldPlayMode : WorldMode
 {
-    public WorldPlayMode(WorldGameManager worldGameManager) : base(worldGameManager)
+    public WorldPlayMode(World worldGameManager) : base(worldGameManager)
     {
     }
 
@@ -24,7 +24,6 @@ internal class WorldPlayMode : WorldMode
 
     public override void Startup()
     {
-
     }
 
     public override void Update()

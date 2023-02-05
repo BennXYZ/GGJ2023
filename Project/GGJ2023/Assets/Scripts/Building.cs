@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
-    public WorldGameManager manager;
+    public World manager;
 
 
     [field: SerializeField]
@@ -25,8 +25,6 @@ public class Building : MonoBehaviour
     [SerializeField]
     int maxNumberAssignedMinions;
     [SerializeField]
-    float friendzone;
-    [SerializeField]
     float width = 3;
     [SerializeField]
     float rootWidth = 3;
@@ -44,7 +42,7 @@ public class Building : MonoBehaviour
     List<Minion> assignedMinions = new List<Minion>();
     List<Minion> spawnedMinions = new List<Minion>();
 
-    public float Width => width;
+    public float Width => width / 2;
 
     bool isEnabled;
 

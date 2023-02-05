@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldGameManager : MonoBehaviour
+public class World : MonoBehaviour
 {
     [SerializeField]
     PlayerType playerID;
@@ -39,6 +39,7 @@ public class WorldGameManager : MonoBehaviour
     InputManager inputManager;
 
     List<Building> existingBuildings = new();
+    public IReadOnlyList<Building> ExistingBuildings => existingBuildings;
     List<Minion> existingUnits = new();
     Building newBuilding;
     int currentFoodCost;
@@ -241,9 +242,9 @@ public enum PlayerType
 
 public abstract class WorldMode
 {
-    public WorldGameManager World { get; private set; }
+    public World World { get; private set; }
 
-    protected WorldMode(WorldGameManager worldGameManager)
+    protected WorldMode(World worldGameManager)
     {
         World = worldGameManager;
     }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 internal class WorldPlayMode : WorldMode
 {
-    Building selectedBuilding;
+    int focussedViewTarget = 0;
 
     public WorldPlayMode(World worldGameManager) : base(worldGameManager)
     {
@@ -11,12 +11,26 @@ internal class WorldPlayMode : WorldMode
 
     public void MovePositive()
     {
+        if (!Active)
+            return;
 
+        focussedViewTarget++;
+        if (focussedViewTarget >= World.ViewTargets.Count)
+            focussedViewTarget = World.ViewTargets.Count - 1;
+
+        MoveCameraToFocus();
     }
 
     public void MoveNegative()
     {
+        if (!Active)
+            return;
 
+        focussedViewTarget--;
+        if (focussedViewTarget < 0)
+            focussedViewTarget = 0;
+
+        MoveCameraToFocus();
     }
 
     public override void Shutdown()
@@ -26,6 +40,33 @@ internal class WorldPlayMode : WorldMode
 
     public override void Startup()
     {
+        FocusNearestTarget();
+    }
+
+    private void FocusNearestTarget()
+    {
+        Vector3 cameraPosition = World.UsedCamera.transform.localPosition;
+
+        focussedViewTarget = 0;
+        float closestDistance = float.MaxValue;
+        for (int i = 0; i < World.ViewTargets.Count; i++)
+        {
+            float distance = Mathf.Abs(World.ViewTargets[i].LocalPosition - cameraPosition.x);
+            if (closestDistance > distance)
+            {
+                closestDistance = distance;
+                focussedViewTarget = i;
+            }
+        }
+
+        MoveCameraToFocus();
+    }
+
+    private void MoveCameraToFocus()
+    {
+        Vector3 cameraPosition = World.UsedCamera.transform.localPosition;
+        cameraPosition.x = World.ViewTargets[focussedViewTarget].LocalPosition;
+        World.UsedCamera.transform.localPosition = cameraPosition;
     }
 
     public override void Update()

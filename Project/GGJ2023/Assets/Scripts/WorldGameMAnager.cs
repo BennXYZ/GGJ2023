@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,6 +64,17 @@ public class WorldGameManager : MonoBehaviour
 
     List<Building> existingBuildings = new();
     List<Minion> existingUnits = new();
+    Building newBuilding;
+    int currentFoodCost;
+    int CurrentlyAvailableMinions
+    {
+        get => existingUnits.Count(u => u.TargetPrio() == 0);
+    }
+    int CurrentMaxUnits
+    {
+        get => existingUnits.Count;
+    }
+    Vector3 cameraMovement;
 
     private WorldGenerator worldGenerator;
 
@@ -114,6 +126,59 @@ public class WorldGameManager : MonoBehaviour
     private void LateUpdate()
     {
         worldGenerator.RefreshGround(usedCamera.transform.position.x, playerID);
+    }
+
+    /// <summary>
+    /// Can be used when a minion is checking for work. assigns minion to first building with free minions slots.
+    /// </summary>
+    /// <param name="minion"></param>
+    void CheckBuildingsToAssign(Minion minion)
+    {
+        foreach(Building building in existingBuildings)
+        {
+            if(building.CanAssignMinions)
+            {
+                building.AssignMinion(minion);
+                return;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Not sure if we need this, but this just checks all buildings and minions and assigns minions to buildings
+    /// </summary>
+    void CheckBuildingsToAssign()
+    {
+        foreach (Building building in existingBuildings)
+        {
+            if (building.CanAssignMinions)
+            {
+                AssignMinionsToBuilding(building);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Finds free workers to assign to a building.
+    /// </summary>
+    void AssignMinionsToBuilding(Building building)
+    {
+        for (int i = 0; i < building.MaxNumberAssignedMinions; i++)
+        {
+            foreach(Minion minion in existingUnits)
+            {
+                if (minion.TargetPrio() == 0)
+                    building.AssignMinion(minion);
+                if (!building.CanAssignMinions)
+                    return;
+            }
+        }
+    }
+
+    public void MinionSpawned(Minion instance)
+    {
+        existingUnits.Add(instance);
+        CheckBuildingsToAssign(instance);
     }
 
     void DespawnUnits(int number)

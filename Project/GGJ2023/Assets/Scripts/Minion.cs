@@ -82,11 +82,6 @@ public class Minion : MonoBehaviour
         return MinionStates.Idle;
     }
 
-    public void SetHome(Building building)
-    {
-        homeBuilding = building;
-    }
-
     public void AssignBuilding(Building building)
     {
         nextAssignedBuilding = building;
@@ -115,7 +110,7 @@ public class Minion : MonoBehaviour
 
     Building GetTargetBuilding()
     {
-        return assignedBuilding != null ? assignedBuilding : homeBuilding;
+        return assignedBuilding;
     }
 
     private void EnterMoving()

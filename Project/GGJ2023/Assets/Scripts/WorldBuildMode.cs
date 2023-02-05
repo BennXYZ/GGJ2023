@@ -125,4 +125,14 @@ internal class WorldBuildMode : WorldMode
             previewBuilding.UsePreviewMaterial(World.Buildings.PreviewShader, IsBlocked ? World.Buildings.PreviewInvalid : World.Buildings.PreviewValid);
         }
     }
+
+    public override string GetBuildingTitle()
+    {
+        return buildings[selectedBuilding].BuildingName;
+    }
+
+    public override string GetBuildingCapacity()
+    {
+        return "Price: " + buildings[selectedBuilding].Price;
+    }
 }

@@ -3,6 +3,8 @@ using UnityEngine;
 
 internal class WorldPlayMode : WorldMode
 {
+    Building selectedBuilding;
+
     public WorldPlayMode(World worldGameManager) : base(worldGameManager)
     {
     }
@@ -28,5 +30,15 @@ internal class WorldPlayMode : WorldMode
 
     public override void Update()
     {
+    }
+
+    public override string GetBuildingTitle()
+    {
+        return "Bush";
+    }
+
+    public override string GetBuildingCapacity()
+    {
+        return "lol";
     }
 }

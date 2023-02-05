@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class World : MonoBehaviour
 {
@@ -15,6 +16,9 @@ public class World : MonoBehaviour
 
     [SerializeField]
     GameObject rootPrefab;
+
+    [SerializeField]
+    Text minionsText, foodText, buildingTitle, capacityText, aButtonText, xButtonText, yButton;
 
     public Minion MinionPrefab => minionPrefab;
     public GameObject RootPrefab => rootPrefab;
@@ -102,6 +106,18 @@ public class World : MonoBehaviour
     void Update()
     {
         currentWorldMode?.Update();
+        UpdateUI();
+    }
+
+    private void UpdateUI()
+    {
+        minionsText.text = CurrentlyAvailableMinions + "/" + CurrentMaxUnits;
+        foodText.text = Resources.ToString();
+        buildingTitle.text = currentWorldMode.GetBuildingTitle();
+        capacityText.text = currentWorldMode.GetBuildingCapacity();
+        aButtonText.text = buildMode.Active ? "Place" : "Enable/ Disable";
+        xButtonText.text = buildMode.Active ? "Play Mode" : "Build Mode";
+        yButton.gameObject.SetActive(!buildMode.Active);
     }
 
     private void LateUpdate()
@@ -260,4 +276,8 @@ public abstract class WorldMode
     public abstract void Update();
 
     public abstract void Startup();
+
+    public abstract string GetBuildingTitle();
+
+    public abstract string GetBuildingCapacity();
 }

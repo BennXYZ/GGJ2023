@@ -7,6 +7,8 @@ public class Building : MonoBehaviour
 {
     public World manager;
 
+    [field: SerializeField]
+    public string BuildingName { get; private set; }
 
     [field: SerializeField]
     public int Price { get; private set; }

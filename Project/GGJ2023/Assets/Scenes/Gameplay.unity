@@ -1347,6 +1347,12 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 355645060326155116, guid: 1d2155c4fdf1feb49b083e0952c55f9f,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 9c551780f61df844d866b011473c630d,
+        type: 3}
     - target: {fileID: 355645060326155117, guid: 1d2155c4fdf1feb49b083e0952c55f9f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1733,7 +1739,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 1518785777}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -1905,7 +1911,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 521702200}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0

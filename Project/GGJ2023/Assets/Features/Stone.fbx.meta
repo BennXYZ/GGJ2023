@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 4ff51d8b9c700a94680734b5d9e23e92
+guid: f238836c609c26547bba121ed40de65a
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Rock
-    second: {fileID: 2100000, guid: 5e8a2ffdacc6a1740b42ef1d01903d3f, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -71,7 +66,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
